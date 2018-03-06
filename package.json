@@ -1,0 +1,24 @@
+{
+  "name": "threejs_node",
+  "version": "1.0.0",
+  "description": "modular THREEjs boilerplate, built off of Node, Express, and Webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aceslowman/threejs_node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aceslowman/threejs_node/issues"
+  },
+  "homepage": "https://github.com/aceslowman/threejs_node#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "three": "^0.90.0",
+    "webpack": "^4.1.0"
+  }
+}
