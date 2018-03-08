@@ -1,4 +1,6 @@
-function SceneSubject(scene){
+import * as THREE from "three";
+
+const SceneSubject = function(scene){
   const mesh = new THREE.Mesh(geometry, material);
 
   scene.add(mesh);
@@ -7,3 +9,5 @@ function SceneSubject(scene){
     // do something
   }
 }
+
+export default SceneSubject;

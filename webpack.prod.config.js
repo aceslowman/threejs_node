@@ -1,16 +1,15 @@
 const path = require('path');
-const srcPath = path.resolve(__dirname, 'src');
-const distPath = path.resolve(__dirname, 'dist');
+const CompressionPlugin = require("compression-webpack-plugin");
+const webpack = require('webpack');
+
+var entry = './public/js/main.js',
+    destination = path.join(__dirname, 'public/js/dist');
 
 module.exports = {
-    context: srcPath,
-    target: 'web',
-
-    entry: './public/js/main.js',
+    entry: entry,
     output: {
-        path: srcPath,
-        filename: './public/js/bundle.js',
-        publicPath: '/'
+        path: destination,
+        filename: 'bundle.js'
     },
     resolve: {
         modules: ['node_modules', 'src'],
@@ -20,12 +19,12 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
+                exclude: [/node_modules/],
                 loader: 'babel-loader',
                 options: {
                   presets:['env'],
                 }
             }
         ]
-    },
-    devtool: 'source-map'
+    }
 };

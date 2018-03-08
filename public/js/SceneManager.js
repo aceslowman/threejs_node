@@ -1,4 +1,8 @@
-@import SceneSubject from "./sceneSubjects/SceneSubject";
+import * as THREE from "three";
+import SceneSubject from "./sceneSubjects/SceneSubject";
+
+import BoundBox from "./sceneSubjects/BoundBox";
+import PointLight from "./sceneSubjects/PointLight";
 
 /*
   This file is responsible for high level actions
@@ -8,39 +12,50 @@
   3. Update everything every frame
 */
 
-var scene, camera, renderer;
+const SceneManager = function(){
+  const scene         = buildScene();
+  const renderer      = buildRenderer();
+  const camera        = buildCamera();
+  const sceneSubjects = createSceneSubjects();
 
-function SceneManager(canvas){
-  buildScene();
-  buildRenderer();
-  buildCamera();
-  createSceneSubjects();
+  function buildScene(){
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0x000000 );
 
-  this.buildScene = function(){
-    scene = new THREE.Scene();
+    return scene;
   }
 
-  this.buildRenderer = function(){
-    renderer = new THREE.WebGLRenderer(
+  function buildRenderer(){
+    const renderer = new THREE.WebGLRenderer(
       {
         'antialias': true,
         'alpha': true
       }
     );
     renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild( renderer.domElement );
+
+    return renderer;
   }
 
-  this.buildCamera = function(){
-    camera = new THREE.PerspectiveCamera(
+  function buildCamera(){
+    const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth/window.innerHeight,
-      0.1,
+      1,
       1000
     );
+    camera.position.z = 2;
+
+    return camera;
   }
 
-  this.createSceneSubjects = function(){
+  function createSceneSubjects(){
+    const sceneSubjects = [];
+    sceneSubjects.push(new PointLight(scene));
+    sceneSubjects.push(new BoundBox(scene));
 
+    return sceneSubjects;
   }
 
   this.update = function(){
@@ -52,10 +67,8 @@ function SceneManager(canvas){
   }
 
   this.onWindowResize = function(){
-    const { width, height } = canvas;
-
-    screenDimensions.width = width;
-    screenDimensions.height = height;
+    const width  = window.innerWidth;
+    const height = window.innerHeight;
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -63,3 +76,5 @@ function SceneManager(canvas){
     renderer.setSize(width, height);
   }
 }
+
+export default SceneManager;
