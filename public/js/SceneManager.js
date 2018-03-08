@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import SceneSubject from "./sceneSubjects/SceneSubject";
 
-import BoundBox from "./sceneSubjects/BoundBox";
+import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
 
 /*
@@ -10,6 +10,9 @@ import PointLight from "./sceneSubjects/PointLight";
   1. create Scene, Renderer, and Camera
   2. Initialize SceneSubjects
   3. Update everything every frame
+
+  SceneSubjects are the objects that represent a single
+  entity in the scene.
 */
 
 const SceneManager = function(){
@@ -53,7 +56,7 @@ const SceneManager = function(){
   function createSceneSubjects(){
     const sceneSubjects = [];
     sceneSubjects.push(new PointLight(scene));
-    sceneSubjects.push(new BoundBox(scene));
+    sceneSubjects.push(new Box(scene));
 
     return sceneSubjects;
   }

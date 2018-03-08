@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const BoundBox = function(scene){
+const Box = function(scene){
   const geometry = setGeometry();
   const material = setMaterial();
 
@@ -13,7 +13,9 @@ const BoundBox = function(scene){
   }
 
   function setMaterial(){
-    const material = new THREE.MeshNormalMaterial();
+    const material = new THREE.MeshNormalMaterial({
+      'wireframe': true
+    });
 
     return material;
   }
@@ -26,4 +28,4 @@ const BoundBox = function(scene){
   scene.add(mesh);
 }
 
-export default BoundBox;
+export default Box;
