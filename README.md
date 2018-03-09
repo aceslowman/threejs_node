@@ -12,8 +12,7 @@ npm run start
 
 The example will be available at `localhost:3000`
 
-## Webpack Configuration
+## TODO 
 
-I am utilizing config.optimization.SplitChunks so that in development, you will
-not need to rebundle all of threejs. This definitely speeds up the wait time.
-
+I hope to reduce the bundle size with gzip, at this moment it's around 550KiB.
+The eventbus seems to work well, but I will likely tweak it as I begin using this boilerplate more often.
