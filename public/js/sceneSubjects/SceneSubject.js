@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const SceneSubject = function(scene){
+const SceneSubject = function(scene, eventBus){
   const geometry = setGeometry();
   const material = setMaterial();
 
@@ -21,6 +21,13 @@ const SceneSubject = function(scene){
   }
 
   this.update = function(){
+    rotateMesh();
+  }
+
+  function rotateMesh(){
+    // publish mesh rotation as an event
+    eventBus.publish('rotation',mesh.rotation);
+
     mesh.rotation.x += 0.009;
     mesh.rotation.y += 0.009;
   }

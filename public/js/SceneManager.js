@@ -4,6 +4,8 @@ import SceneSubject from "./sceneSubjects/SceneSubject";
 import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
 
+import EventBus from "./EventBus";
+
 /*
   This file is responsible for high level actions
 
@@ -16,6 +18,8 @@ import PointLight from "./sceneSubjects/PointLight";
 */
 
 const SceneManager = function(){
+  const eventBus      = new EventBus();
+
   const scene         = buildScene();
   const renderer      = buildRenderer();
   const camera        = buildCamera();
@@ -55,8 +59,8 @@ const SceneManager = function(){
 
   function createSceneSubjects(){
     const sceneSubjects = [];
-    sceneSubjects.push(new PointLight(scene));
-    sceneSubjects.push(new Box(scene));
+    sceneSubjects.push(new PointLight(scene,eventBus));
+    sceneSubjects.push(new Box(scene,eventBus));
 
     return sceneSubjects;
   }

@@ -26,5 +26,17 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+            commons: {
+                test: /[\\/]node_modules[\\/]/,
+                name: "common",
+                filename: 'common.bundle.js',
+                chunks: "all"
+            }
+        }
+      }
+    },
 };

@@ -13,5 +13,5 @@ function render() {
 }
 
 function bindEventListeners(){
-  window.addEventListener( 'resize', sceneManager.onWindowResize, false ); 
+  window.addEventListener( 'resize', sceneManager.onWindowResize, false );
 }
