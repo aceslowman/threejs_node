@@ -23,6 +23,7 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "compression-webpack-plugin": "^1.1.10",
+    "dat.gui": "^0.7.1",
     "express": "^4.16.2",
     "express-static-gzip": "^0.3.2",
     "three": "^0.90.0",

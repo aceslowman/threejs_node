@@ -4,14 +4,14 @@ import SceneManager from "./SceneManager";
 const canvas = document.getElementById('canvas');
 const sceneManager = new SceneManager(canvas);
 
-bindEventListeners();
-render();
-
-function render() {
+const render = ()=>{
   requestAnimationFrame(render);
   sceneManager.update();
 }
 
-function bindEventListeners(){
+const bindEventListeners = ()=>{
   window.addEventListener( 'resize', sceneManager.onWindowResize, false );
 }
+
+bindEventListeners();
+render();

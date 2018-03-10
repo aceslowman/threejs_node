@@ -5,11 +5,12 @@ import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
 
 import EventBus from "./EventBus";
+import dat from "dat.gui";
 
 /*
   This file is responsible for high level actions
 
-  1. create Scene, Renderer, and Camera
+  1. create Scene, Renderer, Camera, and the dat.gui
   2. Initialize SceneSubjects
   3. Update everything every frame
 
@@ -19,20 +20,16 @@ import EventBus from "./EventBus";
 
 const SceneManager = function(){
   const eventBus      = new EventBus();
+  const gui = new dat.GUI();
 
-  const scene         = buildScene();
-  const renderer      = buildRenderer();
-  const camera        = buildCamera();
-  const sceneSubjects = createSceneSubjects();
-
-  function buildScene(){
+  const buildScene = () => {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x000000 );
 
     return scene;
   }
 
-  function buildRenderer(){
+  const buildRenderer = () => {
     const renderer = new THREE.WebGLRenderer(
       {
         'antialias': true,
@@ -45,7 +42,7 @@ const SceneManager = function(){
     return renderer;
   }
 
-  function buildCamera(){
+  const buildCamera = () => {
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth/window.innerHeight,
@@ -57,13 +54,18 @@ const SceneManager = function(){
     return camera;
   }
 
-  function createSceneSubjects(){
+  const createSceneSubjects = () => {
     const sceneSubjects = [];
-    sceneSubjects.push(new PointLight(scene,eventBus));
-    sceneSubjects.push(new Box(scene,eventBus));
+    sceneSubjects.push(new PointLight(scene,eventBus,gui));
+    sceneSubjects.push(new Box(scene,eventBus,gui));
 
     return sceneSubjects;
   }
+
+  const scene         = buildScene();
+  const renderer      = buildRenderer();
+  const camera        = buildCamera();
+  const sceneSubjects = createSceneSubjects();
 
   this.update = function(){
     for(let i=0; i < sceneSubjects.length; i++){
