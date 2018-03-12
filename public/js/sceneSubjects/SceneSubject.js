@@ -6,23 +6,15 @@ const SceneSubject = function(scene, eventBus, gui){
     'speed': 0.009
   }
 
-  const setGeometry = () => {
-    const geometry = new THREE.BoxBufferGeometry( 1,1,1 );
+  const geometry = new THREE.BoxBufferGeometry( 1,1,1 );
 
-    return geometry;
-  }
-
-  const setMaterial = () => {
-    const material = new THREE.MeshNormalMaterial({
-      'wireframe': false
-    });
-
-    return material;
-  }
+  const material = new THREE.MeshNormalMaterial({
+    'wireframe': false
+  });
 
   const rotateMesh = () => {
     // publish mesh rotation as an event
-    eventBus.publish('rotation',mesh.rotation);
+    //eventBus.publish('rotation',mesh.rotation);
 
     mesh.rotation.x += 0.009;
     mesh.rotation.y += 0.009;
@@ -31,9 +23,6 @@ const SceneSubject = function(scene, eventBus, gui){
   this.update = function(){
     rotateMesh();
   }
-
-  const geometry = setGeometry();
-  const material = setMaterial();
 
   const mesh = new THREE.Mesh(geometry, material);
 
