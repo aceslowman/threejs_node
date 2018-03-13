@@ -2,7 +2,6 @@ import * as THREE from "three";
 import SceneSubject from "./sceneSubjects/SceneSubject";
 
 /* ENTITIES */
-import Box from "./sceneSubjects/Box";
 import CylinderGrid from "./sceneSubjects/CylinderGrid";
 import PointLight from "./sceneSubjects/PointLight";
 import Camera from "./sceneSubjects/Camera";
@@ -35,7 +34,6 @@ const SceneManager = function(){
   /* SETUP SCENE SUBJECTS */
   const sceneSubjects = [
     new PointLight(scene, eventBus, gui),
-    new Box(scene, eventBus, gui),
     new CylinderGrid(scene, eventBus, gui),
   ];
 
@@ -45,15 +43,15 @@ const SceneManager = function(){
     }
 
     camera.update();
-    renderer.render(scene, camera.getCamera());
+    renderer.render(scene, camera.cam);
   }
 
   this.onWindowResize = function(){
     const width  = window.innerWidth;
     const height = window.innerHeight;
 
-    camera.getCamera().aspect = width / height;
-    camera.getCamera().updateProjectionMatrix();
+    camera.cam.aspect = width / height;
+    camera.cam.updateProjectionMatrix();
 
     renderer.setSize(width, height);
   }
