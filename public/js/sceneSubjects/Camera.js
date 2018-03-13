@@ -14,14 +14,12 @@ const Camera = function(scene, eventBus, gui){
   }
 
   this.setupGUI = () => {
-    this.params = {
-      'focalLength': 25,
-      'zoom': 1
-    };
+    this.focalLength = 25;
+    this.zoom        = 1;
 
     this.gui = gui.addFolder('Camera');
-    this.control_focalLength = this.gui.add(this.params,'focalLength',0,200);
-    this.control_zoom = this.gui.add(this.params,'zoom',0,10);
+    this.control_focalLength = this.gui.add(this,'focalLength',0,200);
+    this.control_zoom = this.gui.add(this,'zoom',0,10);
 
     this.control_focalLength.onChange((value)=>{
       this.cam.setFocalLength(value);
@@ -32,6 +30,8 @@ const Camera = function(scene, eventBus, gui){
       this.cam.zoom = value;
       this.cam.updateProjectionMatrix();
     });
+
+    this.gui.open();
   }
 
   this.update = () => {}
