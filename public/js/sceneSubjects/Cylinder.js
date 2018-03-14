@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 const Cylinder = function(scene, eventBus, gui){
   this.setup = () => {
-    const geometry = new THREE.CylinderGeometry( 1,1,1 );
+    const geometry = new THREE.CylinderGeometry(1,1,1,32,2);
 
     const material = new THREE.MeshNormalMaterial({
       'wireframe': false

@@ -9,8 +9,8 @@ const CylinderGrid = function(scene, eventBus, gui){
     this.group = new THREE.Group();
 
     this.cylinders  = [];
-    this.resolution = 3;
-    this.scale      = 1.7;
+    this.resolution = 10;
+    this.scale      = 1.5;
     this.drawBox    = true;
 
     this.generateGrid();
@@ -19,33 +19,37 @@ const CylinderGrid = function(scene, eventBus, gui){
       this.generateBox();
     }
 
+    this.group.scale.set(this.scale,this.scale,this.scale);
+    this.group.position.z = -2;
+
     scene.add(this.group);
   }
 
   this.setupGUI = () => {
     this.gui = gui.addFolder('Cylinder Grid');
-    this.scale_ctrl = this.gui.add(this,'scale',0,2);
-    this.res_ctrl   = this.gui.add(this,'resolution',0,10).step(1);
-    this.box_ctrl   = this.gui.add(this,'drawBox');
 
-    this.scale_ctrl.onChange(()=>{
+    this.gui.add(this,'scale',0,2).onChange(()=>{
       this.group.scale.set(this.scale,this.scale,this.scale);
     });
 
-    this.res_ctrl.onChange(()=>{
+    this.gui.add(this,'resolution',0,10).step(1).onChange(()=>{
       for(let i = 0; i < this.cylinders.length; i++){
         this.group.remove(this.cylinders[i].mesh);
       }
       this.generateGrid();
     });
 
-    this.box_ctrl.onChange((value)=>{
+    this.gui.add(this,'drawBox').onChange((value)=>{
       if(value){
         this.generateBox();
       }else{
-        scene.remove(this.bounding_box);
+        this.group.remove(this.bounding_box);
       }
     });
+
+    this.gui.add(this.group.rotation,'x',-Math.PI*2,Math.PI*2);
+    this.gui.add(this.group.rotation,'y',-Math.PI*2,Math.PI*2);
+    this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2);
 
     this.gui.open();
   }
@@ -58,7 +62,7 @@ const CylinderGrid = function(scene, eventBus, gui){
         let cylinder = new Cylinder(scene, eventBus, gui);
         let circum = this.scale / (this.resolution - 1);
 
-        cylinder.mesh.scale.set(circum/2,circum/2,circum/2);
+        cylinder.mesh.scale.set(circum/2,this.scale,circum/2);
 
         cylinder.mesh.position.x = (circum * x) - (this.scale / 2);
         cylinder.mesh.position.y = (circum * y) - (this.scale / 2);
