@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/aceslowman/threejs_node#readme",
   "dependencies": {
-    "ammo.js": "github:kripken/ammo.js",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
