@@ -45,8 +45,10 @@ const CylinderGrid = function(scene, eventBus, gui){
         for(let y = 0; y < this.resolution; y++, i++){
           let circum = this.scale / (this.resolution - 1);
 
-          this.cylinders[i].mesh.position.x = (circum * x - this.scale / 2) * (1 + this.gridspace);
-          this.cylinders[i].mesh.position.y = (circum * y - this.scale / 2) * (1 + this.gridspace);
+          this.cylinders[i].mesh.position.x =
+            (circum * x - this.scale / 2) * (1 + this.gridspace);
+          this.cylinders[i].mesh.position.y =
+            (circum * y - this.scale / 2) * (1 + this.gridspace);
         }
       }
     });
@@ -74,8 +76,10 @@ const CylinderGrid = function(scene, eventBus, gui){
 
         cylinder.mesh.scale.set(circum/2,this.scale,circum/2);
 
-        cylinder.mesh.position.x = (circum * x - this.scale / 2) * (1 + this.gridspace);
-        cylinder.mesh.position.y = (circum * y - this.scale / 2) * (1 + this.gridspace);
+        cylinder.mesh.position.x =
+          (circum * x - this.scale / 2) * (1 + this.gridspace);
+        cylinder.mesh.position.y =
+          (circum * y - this.scale / 2) * (1 + this.gridspace);
 
         cylinder.material.wireframe = this.wireframe;
 

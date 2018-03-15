@@ -3,7 +3,7 @@ import * as THREE from "three";
 //------------------------------------------------------------------------------
 const Camera = function(scene, eventBus, gui){
   this.setup = () => {
-    this.focalLength = 10;
+    this.focalLength = 5;
     this.zoom        = 3;
     this.ortho       = false;
 
