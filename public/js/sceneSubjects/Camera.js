@@ -3,7 +3,7 @@ import * as THREE from "three";
 //------------------------------------------------------------------------------
 const Camera = function(scene, eventBus, gui){
   this.setup = () => {
-    this.focalLength = 5;
+    this.focalLength = 10;
     this.zoom        = 3;
     this.ortho       = false;
 
@@ -25,6 +25,8 @@ const Camera = function(scene, eventBus, gui){
       1000                                      // far
     );
 
+    this.perspective_cam.setFocalLength(this.focalLength);
+
     this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
 
     this.cam.position.z = 1;
@@ -33,7 +35,7 @@ const Camera = function(scene, eventBus, gui){
   this.setupGUI = () => {
     this.gui = gui.addFolder('Camera');
 
-    this.gui.add(this,'focalLength',0,200).onChange((value)=>{
+    this.gui.add(this,'focalLength',0,100).onChange((value)=>{
       if(this.cam.isPerspectiveCamera){
         this.cam.setFocalLength(value);
       }
@@ -45,16 +47,12 @@ const Camera = function(scene, eventBus, gui){
       this.cam.updateProjectionMatrix();
     });
 
+    this.gui.add(this.cam.position,'z',-10,10).onChange(()=>{
+      this.cam.updateProjectionMatrix();
+    });
+
     this.gui.add(this,'ortho').onChange((value)=>{
       this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
-      this.cam.updateProjectionMatrix();
-    });
-
-    this.gui.add(this.cam.position,'y',-10,10).onChange(()=>{
-      this.cam.updateProjectionMatrix();
-    });
-
-    this.gui.add(this.cam.position,'z',-10,10).onChange(()=>{
       this.cam.updateProjectionMatrix();
     });
 

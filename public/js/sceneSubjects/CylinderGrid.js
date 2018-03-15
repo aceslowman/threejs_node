@@ -11,7 +11,8 @@ const CylinderGrid = function(scene, eventBus, gui){
     this.cylinders  = [];
     this.resolution = 10;
     this.scale      = 1.5;
-    this.drawBox    = true;
+    this.gridspace  = 2.0;
+    this.wireframe  = false;
 
     this.generateGrid();
 
@@ -28,22 +29,31 @@ const CylinderGrid = function(scene, eventBus, gui){
   this.setupGUI = () => {
     this.gui = gui.addFolder('Cylinder Grid');
 
-    this.gui.add(this,'scale',0,2).onChange(()=>{
+    this.gui.add(this,'scale',0,10).onChange(()=>{
       this.group.scale.set(this.scale,this.scale,this.scale);
     });
 
-    this.gui.add(this,'resolution',0,10).step(1).onChange(()=>{
+    this.gui.add(this,'resolution',0,20).step(1).onChange(()=>{
       for(let i = 0; i < this.cylinders.length; i++){
         this.group.remove(this.cylinders[i].mesh);
       }
       this.generateGrid();
     });
 
-    this.gui.add(this,'drawBox').onChange((value)=>{
-      if(value){
-        this.generateBox();
-      }else{
-        this.group.remove(this.bounding_box);
+    this.gui.add(this,'gridspace',0,5).onChange(()=>{
+      for(let x = 0, i = 0; x < this.resolution; x++){
+        for(let y = 0; y < this.resolution; y++, i++){
+          let circum = this.scale / (this.resolution - 1);
+
+          this.cylinders[i].mesh.position.x = (circum * x - this.scale / 2) * (1 + this.gridspace);
+          this.cylinders[i].mesh.position.y = (circum * y - this.scale / 2) * (1 + this.gridspace);
+        }
+      }
+    });
+
+    this.gui.add(this,'wireframe').onChange((value)=>{
+      for(let i = 0; i < this.cylinders.length; i++){
+        this.cylinders[i].material.wireframe = value;
       }
     });
 
@@ -64,29 +74,15 @@ const CylinderGrid = function(scene, eventBus, gui){
 
         cylinder.mesh.scale.set(circum/2,this.scale,circum/2);
 
-        cylinder.mesh.position.x = (circum * x) - (this.scale / 2);
-        cylinder.mesh.position.y = (circum * y) - (this.scale / 2);
+        cylinder.mesh.position.x = (circum * x - this.scale / 2) * (1 + this.gridspace);
+        cylinder.mesh.position.y = (circum * y - this.scale / 2) * (1 + this.gridspace);
+
+        cylinder.material.wireframe = this.wireframe;
 
         this.group.add(cylinder.mesh);
         this.cylinders.push(cylinder);
       }
     }
-  }
-
-  this.generateBox = () => {
-    const geometry = new THREE.BoxBufferGeometry(
-      this.scale,
-      this.scale,
-      this.scale
-    );
-
-    const material = new THREE.MeshNormalMaterial({
-      'wireframe': true
-    });
-
-    this.bounding_box = new THREE.Mesh(geometry, material);
-
-    this.group.add(this.bounding_box);
   }
 
   this.update = () => {}
