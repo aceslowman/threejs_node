@@ -16,14 +16,14 @@ diminished by a certain factor.
 
 For simple feedback, there are three required scenes.
 
-Scene A. A standard scene. This scene is what is typically drawn to, and can involve
+Scene A (`mainScene`). This scene is what is typically drawn to, and can involve
 3d objects and textures of any kind.
 
-Scene B. A feedback scene, within which a plane buffer object is rendered, on which,
+Scene B (`feedbackScene`). A plane buffer object is rendered, on which,
 a texture from scene A is projected. This plane buffer object will use the
 feedback shader to process the output of Scene A.
 
-Scene C. An output scene, in which a simple quad is rendered, on which, a texture
+Scene C (`outputScene`). A simple quad is rendered, on which, a texture
 is mapped. This is the final viewing quad, and only serves as a destination.
 
 ## textures
@@ -32,4 +32,4 @@ Since this technique involves render-to-texture, a texture is required as the ou
 of each scene.
 
 When the feedback effect is produced, the initial input of the feedback shader is
-Texture A. The secondary input is the Main Texture (output from Scene A).
+Texture A (`mainTexture`). The secondary input is the Main Texture (output from Scene A).
