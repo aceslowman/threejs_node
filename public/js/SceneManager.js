@@ -10,6 +10,9 @@ import Camera from "./sceneSubjects/Camera";
 import EventBus from "./EventBus";
 import dat from "dat.gui";
 
+/* SHADER */
+import * as feedback from './shaders/feedback';
+
 //------------------------------------------------------------------------------
 const SceneManager = function(){
   const eventBus = new EventBus();
@@ -20,6 +23,8 @@ const SceneManager = function(){
       'antialias': true,
       'alpha': true
     });
+
+    this.renderer.setClearColor("black");
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild( this.renderer.domElement );
@@ -32,13 +37,12 @@ const SceneManager = function(){
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    this.textureA = new THREE.WebGLRenderTarget( width, height );
-    this.textureB = new THREE.WebGLRenderTarget( width, height );
-    this.textureC = new THREE.WebGLRenderTarget( width, height );
-    this.textureD = new THREE.WebGLRenderTarget( width, height );
+    this.mainTarget = new THREE.WebGLRenderTarget( width, height );
+    this.interTarget = new THREE.WebGLRenderTarget( width, height );
+    this.outputTarget = new THREE.WebGLRenderTarget( width, height );
 
     this.setupMainScene();
-    // this.setupFeedbackScene();
+    this.setupFeedbackScene();
     this.setupOutputScene();
   }
 
@@ -56,21 +60,26 @@ const SceneManager = function(){
   */
   this.setupFeedbackScene = () => {
     this.feedbackScene = new THREE.Scene();
+
     this.feedbackUniforms = {
-        tex0: { value: this.textureA.texture },
-        tex1: { value: textTexture },
+        tex0: { value: this.interTarget.texture },
+        tex1: { value: this.mainTarget.texture },
         feedback: { value: 0.6 },
-        scale: { value: 0.992 },
+        scale: { value: 0.9 },
         vPoint: { value: [0.5,0.5] }
     };
 
+    gui.add(this.feedbackUniforms.feedback,'value',0,2);
+    gui.add(this.feedbackUniforms.scale,'value',0,2);
+
     const geometry = new THREE.PlaneBufferGeometry( 2., 2.);
-    const material = new THREE.ShaderMaterial( {
-      uniforms: feedbackUniforms,
-      vertexShader: document.getElementById( 'feedback_vert' ).textContent,
-      fragmentShader: document.getElementById( 'feedback_frag' ).textContent
-    } );
-    const quad = new THREE.Mesh( geometry, this.material );
+    const material = new THREE.ShaderMaterial({
+      uniforms: this.feedbackUniforms,
+      vertexShader: feedback.vert,
+      fragmentShader: feedback.frag
+    });
+
+    const quad = new THREE.Mesh( geometry, material );
     this.feedbackScene.add( quad );
   }
 
@@ -85,7 +94,7 @@ const SceneManager = function(){
     this.outputScene = new THREE.Scene();
 
     const geometry = new THREE.PlaneBufferGeometry( width, height );
-    const material = new THREE.MeshBasicMaterial({ map: this.textureA.texture });
+    const material = new THREE.MeshBasicMaterial({ map: this.outputTarget.texture });
     this.outputQuad = new THREE.Mesh( geometry, material );
     this.outputScene.add( this.outputQuad );
   }
@@ -118,8 +127,16 @@ const SceneManager = function(){
 
     this.camera.update();
 
-    //render to textureA
-    this.renderer.render(this.mainScene, this.camera.cam, this.textureA);
+    this.renderer.render(this.mainScene, this.camera.cam, this.mainTarget);
+    this.renderer.render(this.feedbackScene, this.outputCamera, this.outputTarget);
+
+    let tempTarget = this.interTarget;
+    this.interTarget = this.outputTarget;
+    this.outputTarget = tempTarget;
+
+    this.feedbackUniforms.tex0.value = this.interTarget.texture;
+    this.outputQuad.material.map = this.outputTarget.texture;
+
     this.renderer.render(this.outputScene, this.outputCamera);
   }
 
