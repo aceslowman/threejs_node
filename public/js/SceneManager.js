@@ -69,8 +69,12 @@ const SceneManager = function(){
         vPoint: { value: [0.5,0.5] }
     };
 
-    gui.add(this.feedbackUniforms.feedback,'value',0,2);
-    gui.add(this.feedbackUniforms.scale,'value',0,2);
+    const feedback_gui = gui.addFolder('Feedback Shader');
+
+    feedback_gui.add(this.feedbackUniforms.feedback,'value',0,1).name('Amount');
+    feedback_gui.add(this.feedbackUniforms.scale,'value',0,2).name('Scale');
+
+    feedback_gui.open();
 
     const geometry = new THREE.PlaneBufferGeometry( 2., 2.);
     const material = new THREE.ShaderMaterial({
