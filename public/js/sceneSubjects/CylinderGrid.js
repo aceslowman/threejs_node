@@ -9,9 +9,9 @@ const CylinderGrid = function(scene, eventBus, gui){
     this.group = new THREE.Group();
 
     this.cylinders  = [];
-    this.resolution = 10;
-    this.scale      = 1.5;
-    this.gridspace  = 2.0;
+    this.resolution = 5;
+    this.scale      = 0.5;
+    this.gridspace  = 2.8;
     this.wireframe  = false;
 
     this.generateGrid();
@@ -59,9 +59,9 @@ const CylinderGrid = function(scene, eventBus, gui){
       }
     });
 
-    this.gui.add(this.group.rotation,'x',-Math.PI*2,Math.PI*2);
-    this.gui.add(this.group.rotation,'y',-Math.PI*2,Math.PI*2);
-    this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2);
+    this.gui.add(this.group.rotation,'x',-Math.PI*2,Math.PI*2).step(0.01);
+    this.gui.add(this.group.rotation,'y',-Math.PI*2,Math.PI*2).step(0.01);
+    this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2).step(0.01);
 
     this.gui.open();
   }

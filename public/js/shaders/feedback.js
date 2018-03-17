@@ -28,15 +28,17 @@ void main(){
     uv2 += vPoint/scale;
     uv2 *= scale;
 
-    vec4 fb = vec4(0.0);
-    vec4 current = vec4(0.0);
+    vec4 current = texture2D(tex1, uv);
+    vec4 fb = texture2D(tex0, uv2);
 
-    current = texture2D(tex1, uv);
-    fb = texture2D(tex0, uv2);
-    // color = current + (fb * feedback); //this leads to additive blending
-    color = mix(current,fb,feedback); //this diminishes brightness, but retains color
+    // color = mix(current,fb,feedback);
+    if(current.a == 0.0){
+      color = fb * feedback;
+    }else{
+      color = current;
+    }
 
-    gl_FragColor = vec4(color.rgb,1.0);
+    gl_FragColor = color;
 }
 `;
 

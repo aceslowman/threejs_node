@@ -16,7 +16,11 @@ stats.domElement.style.top = '0px';
 document.body.appendChild( stats.domElement );
 
 const render = ()=>{
-  requestAnimationFrame(render);
+  // setTimeout( function() {
+
+      requestAnimationFrame( render );
+  //
+  // }, 1000 / 30 );
 
   stats.begin();
   sceneManager.update();

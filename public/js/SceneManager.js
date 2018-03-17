@@ -24,7 +24,7 @@ const SceneManager = function(){
       'alpha': true
     });
 
-    this.renderer.setClearColor("black");
+    this.renderer.setClearColor(0x000000, 0);
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild( this.renderer.domElement );
@@ -37,9 +37,15 @@ const SceneManager = function(){
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    this.mainTarget = new THREE.WebGLRenderTarget( width, height );
-    this.interTarget = new THREE.WebGLRenderTarget( width, height );
-    this.outputTarget = new THREE.WebGLRenderTarget( width, height );
+    this.mainTarget   = new THREE.WebGLRenderTarget( width, height, {
+      format: THREE.RGBAFormat
+    });
+    this.interTarget  = new THREE.WebGLRenderTarget( width, height, {
+      format: THREE.RGBAFormat
+    });
+    this.outputTarget = new THREE.WebGLRenderTarget( width, height, {
+      format: THREE.RGBAFormat
+    });
 
     this.setupMainScene();
     this.setupFeedbackScene();
@@ -52,7 +58,6 @@ const SceneManager = function(){
   */
   this.setupMainScene = () => {
     this.mainScene = new THREE.Scene();
-    this.mainScene.background = new THREE.Color( 0x000000 );
   }
 
   /*
@@ -64,8 +69,8 @@ const SceneManager = function(){
     this.feedbackUniforms = {
         tex0: { value: this.interTarget.texture },
         tex1: { value: this.mainTarget.texture },
-        feedback: { value: 0.6 },
-        scale: { value: 0.9 },
+        feedback: { value: 0.99 },
+        scale: { value: 1.05 },
         vPoint: { value: [0.5,0.5] }
     };
 
@@ -73,6 +78,8 @@ const SceneManager = function(){
 
     feedback_gui.add(this.feedbackUniforms.feedback,'value',0,1).name('Amount');
     feedback_gui.add(this.feedbackUniforms.scale,'value',0,2).name('Scale');
+    // feedback_gui.add(this.feedbackUniforms.vPoint,'value')
+
 
     feedback_gui.open();
 
@@ -80,7 +87,8 @@ const SceneManager = function(){
     const material = new THREE.ShaderMaterial({
       uniforms: this.feedbackUniforms,
       vertexShader: feedback.vert,
-      fragmentShader: feedback.frag
+      fragmentShader: feedback.frag,
+      transparent: true
     });
 
     const quad = new THREE.Mesh( geometry, material );
@@ -96,9 +104,13 @@ const SceneManager = function(){
     const height = window.innerHeight;
 
     this.outputScene = new THREE.Scene();
+    this.outputScene.background = new THREE.Color( 0x000000 );
 
     const geometry = new THREE.PlaneBufferGeometry( width, height );
-    const material = new THREE.MeshBasicMaterial({ map: this.outputTarget.texture });
+    const material = new THREE.MeshBasicMaterial({
+      map: this.outputTarget.texture,
+      transparent: true
+    });
     this.outputQuad = new THREE.Mesh( geometry, material );
     this.outputScene.add( this.outputQuad );
   }
