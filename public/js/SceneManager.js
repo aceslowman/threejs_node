@@ -17,6 +17,7 @@ import * as feedback from './shaders/feedback';
 const SceneManager = function(){
   const eventBus = new EventBus();
   const gui = new dat.GUI();
+  const clock = new THREE.Clock();
 
   this.setupRenderer = () => {
     this.renderer = new THREE.WebGLRenderer({
@@ -69,8 +70,8 @@ const SceneManager = function(){
     this.feedbackUniforms = {
         tex0: { value: this.interTarget.texture },
         tex1: { value: this.mainTarget.texture },
-        feedback: { value: 0.99 },
-        scale: { value: 1.05 },
+        feedback: { value: 1.0 },
+        scale: { value: 1.02 },
         vPoint: { value: [0.5,0.5] }
     };
 
@@ -131,8 +132,8 @@ const SceneManager = function(){
 
   this.setupSceneSubjects = () => {
     this.sceneSubjects = [
-      new PointLight(this.mainScene, eventBus, gui),
-      new CylinderGrid(this.mainScene, eventBus, gui)
+      // new PointLight(this.mainScene, eventBus, gui, clock),
+      new CylinderGrid(this.mainScene, eventBus, gui, clock)
     ];
   }
 
@@ -170,6 +171,8 @@ const SceneManager = function(){
   this.setupScenes();
   this.setupCameras();
   this.setupSceneSubjects();
+
+  gui.close();
 }
 
 export default SceneManager;

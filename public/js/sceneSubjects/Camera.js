@@ -3,8 +3,8 @@ import * as THREE from "three";
 //------------------------------------------------------------------------------
 const Camera = function(scene, eventBus, gui){
   this.setup = () => {
-    this.focalLength = 100;
-    this.zoom        = 0.2;
+    this.focalLength = 150;
+    this.zoom        = 0.46;
     this.ortho       = false;
 
     const aspect = window.innerWidth / window.innerHeight;
@@ -29,7 +29,7 @@ const Camera = function(scene, eventBus, gui){
 
     this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
 
-    this.cam.position.z = -1;
+    this.cam.position.z = 1.8;
     this.cam.zoom = this.zoom;
     this.cam.updateProjectionMatrix();
   }
@@ -45,6 +45,7 @@ const Camera = function(scene, eventBus, gui){
     });
 
     this.gui.add(this,'zoom',0,10).onChange((value)=>{
+      this.cam.zoom = value;
       this.cam.updateProjectionMatrix();
     });
 

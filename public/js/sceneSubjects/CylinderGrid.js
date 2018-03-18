@@ -4,13 +4,13 @@ import Cylinder from "./Cylinder";
 import Box from "./Box";
 
 //------------------------------------------------------------------------------
-const CylinderGrid = function(scene, eventBus, gui){
+const CylinderGrid = function(scene, eventBus, gui, clock){
   this.setup = () => {
     this.group = new THREE.Group();
 
     this.cylinders  = [];
-    this.resolution = 5;
-    this.scale      = 0.5;
+    this.resolution = 14;
+    this.scale      = 0.4;
     this.gridspace  = 2.8;
     this.wireframe  = false;
 
@@ -61,7 +61,7 @@ const CylinderGrid = function(scene, eventBus, gui){
 
     this.gui.add(this.group.rotation,'x',-Math.PI*2,Math.PI*2).step(0.01);
     this.gui.add(this.group.rotation,'y',-Math.PI*2,Math.PI*2).step(0.01);
-    this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2).step(0.01);
+    // this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2).step(0.01);
 
     this.gui.open();
   }
@@ -89,7 +89,10 @@ const CylinderGrid = function(scene, eventBus, gui){
     }
   }
 
-  this.update = () => {}
+  this.update = () => {
+    console.log(clock.elapsedTime);
+    this.group.rotation.z = (Math.PI/2) * Math.sin(clock.getElapsedTime()/1.0);
+  }
 
   this.setup();
   this.setupGUI();
