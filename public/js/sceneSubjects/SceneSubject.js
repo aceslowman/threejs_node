@@ -27,8 +27,7 @@ const SceneSubject = function(scene, eventBus, gui){
   }
 
   //---------------------------------
-
-  this.update = function(){
+  this.update = () => {
     // eventBus.publish('rotation', mesh.rotation);
 
     this.mesh.rotation.x += this.speed;

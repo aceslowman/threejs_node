@@ -7,7 +7,7 @@ import PointLight from "./sceneSubjects/PointLight";
 import Camera from "./Camera";
 
 /* UTILITY */
-import EventBus from "./EventBus";
+import EventBus from "./utils/EventBus";
 
 /*
   This file is responsible for high level actions
@@ -21,7 +21,7 @@ import EventBus from "./EventBus";
 */
 
 const SceneManager = function(gui){
-  const eventBus      = new EventBus();
+  const eventBus = new EventBus();
   const clock = new THREE.Clock();
 
   this.buildScene = () => {
@@ -30,21 +30,15 @@ const SceneManager = function(gui){
   }
 
   this.buildRenderer = () => {
-    this.renderer = new THREE.WebGLRenderer(
-      {
+    this.renderer = new THREE.WebGLRenderer({
         'antialias': true,
         'alpha': true
-      }
-    );
+    });
 
     this.renderer.setClearColor(0x000000, 0);
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild( this.renderer.domElement );
-  }
-
-  this.getCanvas = () => {
-    return this.renderer.domElement;
   }
 
   this.buildCamera = () => {
@@ -73,6 +67,10 @@ const SceneManager = function(gui){
     this.camera.cam.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
+  }
+
+  this.getCanvas = () => {
+    return this.renderer.domElement;
   }
 
   this.buildScene();

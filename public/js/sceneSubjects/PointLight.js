@@ -13,12 +13,14 @@ const PointLight = function(scene, eventBus, gui){
     // eventBus.subscribe('rotation', this.onRotate );
 
     this.light.position.set( 1, 1, 1 );
-    scene.add(light);
+    scene.add(this.light);
   }
 
   this.update = () => {
     // do something
   }
+
+  this.setup();
 }
 
 export default PointLight;
