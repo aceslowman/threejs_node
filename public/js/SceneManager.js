@@ -1,11 +1,13 @@
 import * as THREE from "three";
 import SceneSubject from "./sceneSubjects/SceneSubject";
 
+/* ENTITIES */
 import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
+import Camera from "./Camera";
 
+/* UTILITY */
 import EventBus from "./EventBus";
-import dat from "dat.gui";
 
 /*
   This file is responsible for high level actions
@@ -18,72 +20,65 @@ import dat from "dat.gui";
   entity in the scene.
 */
 
-const SceneManager = function(){
+const SceneManager = function(gui){
   const eventBus      = new EventBus();
-  const gui = new dat.GUI();
+  const clock = new THREE.Clock();
 
-  const buildScene = () => {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x000000 );
-
-    return scene;
+  this.buildScene = () => {
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color( 0x000000 );
   }
 
-  const buildRenderer = () => {
-    const renderer = new THREE.WebGLRenderer(
+  this.buildRenderer = () => {
+    this.renderer = new THREE.WebGLRenderer(
       {
         'antialias': true,
         'alpha': true
       }
     );
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild( renderer.domElement );
 
-    return renderer;
+    this.renderer.setClearColor(0x000000, 0);
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild( this.renderer.domElement );
   }
 
-  const buildCamera = () => {
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth/window.innerHeight,
-      1,
-      1000
-    );
-    camera.position.z = 2;
-
-    return camera;
+  this.getCanvas = () => {
+    return this.renderer.domElement;
   }
 
-  const createSceneSubjects = () => {
-    const sceneSubjects = [];
-    sceneSubjects.push(new PointLight(scene,eventBus,gui));
-    sceneSubjects.push(new Box(scene,eventBus,gui));
-
-    return sceneSubjects;
+  this.buildCamera = () => {
+    this.camera = new Camera(this.mainScene, eventBus, gui);
   }
 
-  const scene         = buildScene();
-  const renderer      = buildRenderer();
-  const camera        = buildCamera();
-  const sceneSubjects = createSceneSubjects();
+  this.createSceneSubjects = () => {
+    this.sceneSubjects = [];
+    this.sceneSubjects.push(new PointLight(this.scene,eventBus,gui));
+    this.sceneSubjects.push(new Box(this.scene,eventBus,gui));
+  }
 
-  this.update = function(){
-    for(let i=0; i < sceneSubjects.length; i++){
-      sceneSubjects[i].update();
+  this.update = () => {
+    for(let i=0; i < this.sceneSubjects.length; i++){
+      this.sceneSubjects[i].update();
     }
 
-    renderer.render(scene, camera);
+    this.renderer.render(this.scene, this.camera.cam);
   }
 
-  this.onWindowResize = function(){
+  this.onWindowResize = () => {
     const width  = window.innerWidth;
     const height = window.innerHeight;
 
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    this.camera.cam.aspect = width / height;
+    this.camera.cam.updateProjectionMatrix();
 
-    renderer.setSize(width, height);
+    this.renderer.setSize(width, height);
   }
+
+  this.buildScene();
+  this.buildRenderer();
+  this.buildCamera();
+  this.createSceneSubjects();
 }
 
 export default SceneManager;

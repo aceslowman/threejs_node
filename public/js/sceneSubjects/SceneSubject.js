@@ -1,43 +1,42 @@
 import * as THREE from "three";
 
 const SceneSubject = function(scene, eventBus, gui){
-  this.params = {
-    'scale': 1,
-    'speed': 0.009
+  this.setupGUI = () => {
+    this.gui = gui.addFolder('Box');
+
+    this.gui.scale = this.gui.addFolder('Scale');
+    this.gui.scale.add(this.mesh.scale,'x',-10,10);
+    this.gui.scale.add(this.mesh.scale,'y',-10,10);
+    this.gui.scale.add(this.mesh.scale,'z',-10,10);
+
+    this.gui.add(this, 'speed', 0.001, 0.5);
   }
 
-  const setGeometry = () => {
-    const geometry = new THREE.BoxBufferGeometry( 1,1,1 );
+  //---------------------------------
+  this.setup = () => {
+    this.speed = 0.01;
 
-    return geometry;
-  }
-
-  const setMaterial = () => {
-    const material = new THREE.MeshNormalMaterial({
-      'wireframe': false
+    this.geometry = new THREE.BoxBufferGeometry();
+    this.material = new THREE.MeshNormalMaterial({
+      'wireframe': true
     });
 
-    return material;
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+
+    scene.add(this.mesh);
   }
 
-  const rotateMesh = () => {
-    // publish mesh rotation as an event
-    eventBus.publish('rotation',mesh.rotation);
-
-    mesh.rotation.x += 0.009;
-    mesh.rotation.y += 0.009;
-  }
+  //---------------------------------
 
   this.update = function(){
-    rotateMesh();
+    // eventBus.publish('rotation', mesh.rotation);
+
+    this.mesh.rotation.x += this.speed;
+    this.mesh.rotation.y += this.speed;
   }
 
-  const geometry = setGeometry();
-  const material = setMaterial();
-
-  const mesh = new THREE.Mesh(geometry, material);
-
-  scene.add(mesh);
+  this.setup();
+  this.setupGUI();
 }
 
 export default SceneSubject;
