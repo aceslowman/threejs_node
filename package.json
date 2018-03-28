@@ -22,6 +22,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
+    "ccapture.js": "^1.0.9",
     "compression-webpack-plugin": "^1.1.10",
     "dat.gui": "^0.7.1",
     "express": "^4.16.2",

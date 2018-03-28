@@ -15,12 +15,8 @@ stats.domElement.style.top = '0px';
 
 document.body.appendChild( stats.domElement );
 
-const render = ()=>{
-  // setTimeout( function() {
-
-      requestAnimationFrame( render );
-  //
-  // }, 1000 / 30 );
+const render = () => {
+  requestAnimationFrame( render );
 
   stats.begin();
   sceneManager.update();
@@ -32,6 +28,4 @@ const bindEventListeners = ()=>{
 }
 
 bindEventListeners();
-
-
 render();
