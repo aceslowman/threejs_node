@@ -1,24 +1,23 @@
 import * as THREE from "three";
 
-//------------------------------------------------------------------------------
-const Camera = function(scene, eventBus, gui){
-  this.setup = () => {
-    const aspect = window.innerWidth / window.innerHeight;
+export default class asCamera {
+  constructor(scene, eventBus, gui){
+    this.aspect = window.innerWidth / window.innerHeight;
 
     this.ortho_cam = new THREE.OrthographicCamera(
-      aspect / - 2,
-      aspect / 2,
-      aspect / 2,
-      aspect / - 2,
+      this.aspect / - 2,
+      this.aspect / 2,
+      this.aspect / 2,
+      this.aspect / - 2,
       0,
       1000
     );
 
     this.perspective_cam = new THREE.PerspectiveCamera(
-      75,                                       // fov
-      window.innerWidth/window.innerHeight,     // aspect
-      0.1,                                      // near
-      1000                                      // far
+      75,           // fov
+      this.aspect,  // aspect
+      0.1,          // near
+      1000          // far
     );
 
     this.zoom        = 1;
@@ -26,13 +25,14 @@ const Camera = function(scene, eventBus, gui){
     this.focalLength = this.perspective_cam.getFocalLength();
 
     this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
-
     this.cam.position.z = 2;
     this.cam.zoom = this.zoom;
     this.cam.updateProjectionMatrix();
+
+    this.setupGUI(gui);
   }
 
-  this.setupGUI = () => {
+  setupGUI(gui){
     this.gui = gui.addFolder('Camera');
     this.gui.position = this.gui.addFolder('Position');
 
@@ -60,8 +60,6 @@ const Camera = function(scene, eventBus, gui){
       this.cam.updateProjectionMatrix();
     });
 
-
-
     this.gui.add(this,'ortho').onChange((value)=>{
       this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
       this.cam.updateProjectionMatrix();
@@ -70,10 +68,5 @@ const Camera = function(scene, eventBus, gui){
     this.gui.close();
   }
 
-  this.update = () => {}
-
-  this.setup();
-  this.setupGUI();
+  update(){}
 }
-
-export default Camera;

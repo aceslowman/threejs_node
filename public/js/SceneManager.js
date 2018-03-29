@@ -4,7 +4,7 @@ import SceneSubject from "./sceneSubjects/SceneSubject";
 /* ENTITIES */
 import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
-import Camera from "./Camera";
+import asCamera from "./asCamera";
 
 /* UTILITY */
 import EventBus from "./utils/EventBus";
@@ -20,38 +20,45 @@ import EventBus from "./utils/EventBus";
   entity in the scene.
 */
 
-const SceneManager = function(gui){
-  const eventBus = new EventBus();
-  const clock = new THREE.Clock();
+export default class SceneManager{
+  constructor(gui){
+    this.eventBus = new EventBus();
+    this.clock = new THREE.Clock();
 
-  this.buildScene = () => {
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color( 0x000000 );
+    const buildScene = () => {
+      this.scene = new THREE.Scene();
+      this.scene.background = new THREE.Color( 0x000000 );
+    }
+
+    const buildRenderer = () => {
+      this.renderer = new THREE.WebGLRenderer({
+          'antialias': true,
+          'alpha': true
+      });
+
+      this.renderer.setClearColor(0x000000, 0);
+
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild( this.renderer.domElement );
+    }
+
+    const buildCamera = () => {
+      this.camera = new asCamera(this.mainScene, this.eventBus, gui);
+    }
+
+    const createSceneSubjects = () => {
+      this.sceneSubjects = [];
+      this.sceneSubjects.push(new PointLight(this.scene,this.eventBus,gui));
+      this.sceneSubjects.push(new Box(this.scene,this.eventBus,gui));
+    }
+
+    buildScene();
+    buildRenderer();
+    buildCamera();
+    createSceneSubjects();
   }
 
-  this.buildRenderer = () => {
-    this.renderer = new THREE.WebGLRenderer({
-        'antialias': true,
-        'alpha': true
-    });
-
-    this.renderer.setClearColor(0x000000, 0);
-
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild( this.renderer.domElement );
-  }
-
-  this.buildCamera = () => {
-    this.camera = new Camera(this.mainScene, eventBus, gui);
-  }
-
-  this.createSceneSubjects = () => {
-    this.sceneSubjects = [];
-    this.sceneSubjects.push(new PointLight(this.scene,eventBus,gui));
-    this.sceneSubjects.push(new Box(this.scene,eventBus,gui));
-  }
-
-  this.update = () => {
+  update(){
     for(let i=0; i < this.sceneSubjects.length; i++){
       this.sceneSubjects[i].update();
     }
@@ -59,7 +66,7 @@ const SceneManager = function(gui){
     this.renderer.render(this.scene, this.camera.cam);
   }
 
-  this.onWindowResize = () => {
+  onWindowResize(){
     const width  = window.innerWidth;
     const height = window.innerHeight;
 
@@ -69,14 +76,7 @@ const SceneManager = function(gui){
     this.renderer.setSize(width, height);
   }
 
-  this.getCanvas = () => {
+  get canvas(){
     return this.renderer.domElement;
   }
-
-  this.buildScene();
-  this.buildRenderer();
-  this.buildCamera();
-  this.createSceneSubjects();
 }
-
-export default SceneManager;

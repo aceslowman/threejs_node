@@ -1,13 +1,19 @@
 import * as THREE from "three";
 import SceneManager from "./SceneManager";
-import Capture from "./utils/Capture";
-import Debug from "./utils/Debug";
+import asCapture from "./utils/asCapture";
+import asDebug from "./utils/asDebug";
 import dat from "dat.gui";
 
-const debug        = new Debug();
-const gui          = new dat.GUI();
-const capturer     = new Capture(gui).capturer;
+const gui      = new dat.GUI();
 const sceneManager = new SceneManager(gui);
+const debug    = new asDebug();
+const capturer = new asCapture(gui, {
+  verbose: true,
+  display: true,
+  framerate: 30,
+  format: 'png',
+  workersPath: 'js/utils/'
+});
 
 const render = () => {
   requestAnimationFrame(render);
@@ -16,11 +22,15 @@ const render = () => {
   sceneManager.update();
   if ( debug.stats ) debug.stats.end();
 
-  if( capturer ) capturer.capture( sceneManager.getCanvas() );
+  if( capturer ) capturer.capture( sceneManager.canvas );
 }
 
 const bindEventListeners = () => {
-  window.addEventListener( 'resize', sceneManager.onWindowResize, false );
+  window.addEventListener(
+    'resize',
+    sceneManager.onWindowResize.bind(sceneManager),
+    false
+  );
 }
 
 bindEventListeners();

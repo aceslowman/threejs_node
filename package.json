@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aceslowman/threejs_node#readme",
   "dependencies": {
+    "babel-preset-env": "^1.6.1",
     "ccapture.js": "github:aceslowman/ccapture.js#npm-fix",
     "dat.gui": "^0.7.1",
     "express": "^4.16.2",
@@ -30,7 +31,6 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.6.1",
     "compression-webpack-plugin": "^1.1.10",
     "webpack": "^4.1.0",
     "webpack-cli": "^2.0.10",
