@@ -25,7 +25,7 @@ export default class Box {
   }
 
   update(){
-    this.eventBus.publish('rotation', this.mesh.rotation);
+    // this.eventBus.publish('rotation', this.mesh.rotation);
     this.mesh.rotation.x += this.speed;
     this.mesh.rotation.y += this.speed;
   }

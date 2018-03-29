@@ -10,7 +10,7 @@ const PointLight = function(scene, eventBus, gui){
   this.setup = () => {
     // subscribe to the 'rotation' event, and call the onRotate()
     // method whenever a change is found.
-    eventBus.subscribe('rotation', this.onRotate );
+    // eventBus.subscribe('rotation', this.onRotate );
 
     this.light.position.set( 1, 1, 1 );
     scene.add(this.light);

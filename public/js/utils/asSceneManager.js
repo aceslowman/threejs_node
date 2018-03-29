@@ -1,13 +1,13 @@
 import * as THREE from "three";
-import SceneSubject from "./sceneSubjects/SceneSubject";
+import SceneSubject from "../sceneSubjects/SceneSubject";
 
 /* ENTITIES */
-import Box from "./sceneSubjects/Box";
-import PointLight from "./sceneSubjects/PointLight";
+import Box from "../sceneSubjects/Box";
+import PointLight from "../sceneSubjects/PointLight";
 import asCamera from "./asCamera";
 
 /* UTILITY */
-import EventBus from "./utils/EventBus";
+import asEventBus from "./asEventBus";
 
 /*
   This file is responsible for high level actions
@@ -22,7 +22,7 @@ import EventBus from "./utils/EventBus";
 
 export default class SceneManager{
   constructor(gui){
-    this.eventBus = new EventBus();
+    this.eventBus = new asEventBus();
     this.clock = new THREE.Clock();
 
     const buildScene = () => {
