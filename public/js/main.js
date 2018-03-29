@@ -4,16 +4,25 @@ import asCapture from "./utils/asCapture";
 import asDebug from "./utils/asDebug";
 import dat from "dat.gui";
 
-let gui = '';
-let feedbackManager = '';
-let debug = '';
-let capturer = '';
+import CylinderGrid from "./sceneSubjects/CylinderGrid";
+
+let gui, manager, debug, capturer;
+let grid;
 
 const setup = () => {
-  gui             = new dat.GUI();
-  feedbackManager = new asFeedbackManager(gui);
-  debug           = new asDebug();
-  capturer        = new asCapture(gui, {
+  gui     = new dat.GUI();
+  manager = new asFeedbackManager(gui);
+  manager.camera.cam.zoom = 6.4;
+  manager.camera.cam.updateProjectionMatrix();
+
+  grid = new CylinderGrid(manager.scene,manager.eventBus,gui,manager.clock);
+
+  manager.subjects = [
+    grid
+  ];
+
+  debug    = new asDebug();
+  capturer = new asCapture(gui, {
     verbose: true,
     display: true,
     framerate: 30,
@@ -26,14 +35,14 @@ const render = () => {
   requestAnimationFrame(render);
 
   debug.stats.begin();
-  feedbackManager.update();
+  manager.update();
   debug.stats.end();
 
-  capturer.capture( feedbackManager.canvas );
+  capturer.capture( manager.canvas );
 }
 
 const bindEventListeners = () => {
-  window.addEventListener( 'resize', feedbackManager.onWindowResize.bind(feedbackManager), false );
+  window.addEventListener( 'resize', manager.onWindowResize.bind(manager), false );
 }
 
 setup();
