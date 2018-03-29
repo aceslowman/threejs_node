@@ -1,37 +1,56 @@
 import * as THREE from "three";
-import asSceneManager from "./utils/asSceneManager";
+import asManager from "./utils/asManager";
+import asFeedbackManager from "./utils/asFeedbackManager";
 import asCapture from "./utils/asCapture";
 import asDebug from "./utils/asDebug";
 import dat from "dat.gui";
 
-const gui      = new dat.GUI();
-const sceneManager = new asSceneManager(gui);
-const debug    = new asDebug();
-const capturer = new asCapture(gui, {
-  verbose: true,
-  display: true,
-  framerate: 30,
-  format: 'png',
-  workersPath: 'js/utils/'
-});
+import Box from "./sceneSubjects/Box";
+import PointLight from "./sceneSubjects/PointLight";
+
+let gui, manager, debug, capturer;
+let box;
+
+const setup = () => {
+  gui      = new dat.GUI();
+  manager = new asFeedbackManager(gui);
+  // manager = new asManager(gui);
+  // manager.scene.background = new THREE.Color( 0x000000 );
+
+  box = new Box(manager.scene,manager.eventBus,gui);
+
+  manager.subjects = [
+    box
+  ];
+
+  debug    = new asDebug();
+  capturer = new asCapture(gui, {
+    verbose: true,
+    display: true,
+    framerate: 30,
+    format: 'png',
+    workersPath: 'js/utils/'
+  });
+}
 
 const render = () => {
   requestAnimationFrame(render);
 
-  if ( debug.stats ) debug.stats.begin();
-  sceneManager.update();
-  if ( debug.stats ) debug.stats.end();
+  debug.stats.begin();
+  manager.update();
+  debug.stats.end();
 
-  if( capturer ) capturer.capture( sceneManager.canvas );
+  capturer.capture( manager.canvas );
 }
 
 const bindEventListeners = () => {
   window.addEventListener(
     'resize',
-    sceneManager.onWindowResize.bind(sceneManager),
+    manager.onWindowResize.bind(manager),
     false
   );
 }
 
+setup();
 bindEventListeners();
 render();
