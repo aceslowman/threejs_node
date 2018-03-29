@@ -3,10 +3,6 @@ import * as THREE from "three";
 //------------------------------------------------------------------------------
 const Camera = function(scene, eventBus, gui){
   this.setup = () => {
-    this.focalLength = 150;
-    this.zoom        = 0.46;
-    this.ortho       = false;
-
     const aspect = window.innerWidth / window.innerHeight;
 
     this.ortho_cam = new THREE.OrthographicCamera(
@@ -25,17 +21,32 @@ const Camera = function(scene, eventBus, gui){
       1000                                      // far
     );
 
-    this.perspective_cam.setFocalLength(this.focalLength);
+    this.zoom        = 1;
+    this.ortho       = false;
+    this.focalLength = this.perspective_cam.getFocalLength();
 
     this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
 
-    this.cam.position.z = 1.8;
+    this.cam.position.z = 2;
     this.cam.zoom = this.zoom;
     this.cam.updateProjectionMatrix();
   }
 
   this.setupGUI = () => {
     this.gui = gui.addFolder('Camera');
+    this.gui.position = this.gui.addFolder('Position');
+
+    this.gui.position.add(this.cam.position,'x',-10,10).onChange(()=>{
+      this.cam.updateProjectionMatrix();
+    });
+
+    this.gui.position.add(this.cam.position,'y',-10,10).onChange(()=>{
+      this.cam.updateProjectionMatrix();
+    });
+
+    this.gui.position.add(this.cam.position,'z',-10,10).onChange(()=>{
+      this.cam.updateProjectionMatrix();
+    });
 
     this.gui.add(this,'focalLength',0,150).onChange((value)=>{
       if(this.cam.isPerspectiveCamera){
@@ -49,16 +60,14 @@ const Camera = function(scene, eventBus, gui){
       this.cam.updateProjectionMatrix();
     });
 
-    this.gui.add(this.cam.position,'z',-10,10).onChange(()=>{
-      this.cam.updateProjectionMatrix();
-    });
+
 
     this.gui.add(this,'ortho').onChange((value)=>{
       this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
       this.cam.updateProjectionMatrix();
     });
 
-    this.gui.open();
+    this.gui.close();
   }
 
   this.update = () => {}

@@ -90,7 +90,7 @@ const CylinderGrid = function(scene, eventBus, gui, clock){
   }
 
   this.update = () => {
-    console.log(clock.elapsedTime);
+    // console.log(clock.elapsedTime);
     this.group.rotation.z = (Math.PI/2) * Math.sin(clock.getElapsedTime()/1.0);
   }
 

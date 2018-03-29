@@ -1,29 +1,25 @@
 import * as THREE from "three";
 import SceneManager from "./SceneManager";
+import Capture from "./utils/Capture";
+import Debug from "./utils/Debug";
+import dat from "dat.gui";
 
-import Stats from "stats-js";
-
-const canvas = document.getElementById('canvas');
-const sceneManager = new SceneManager(canvas);
-
-const stats = new Stats();
-stats.setMode(0);
-
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.left = '0px';
-stats.domElement.style.top = '0px';
-
-document.body.appendChild( stats.domElement );
+const debug        = new Debug();
+const gui          = new dat.GUI();
+const capturer     = new Capture(gui).capturer;
+const sceneManager = new SceneManager(gui);
 
 const render = () => {
-  requestAnimationFrame( render );
+  requestAnimationFrame(render);
 
-  stats.begin();
+  if ( debug.stats ) debug.stats.begin();
   sceneManager.update();
-  stats.end();
+  if ( debug.stats ) debug.stats.end();
+
+  if( capturer ) capturer.capture( sceneManager.getCanvas() );
 }
 
-const bindEventListeners = ()=>{
+const bindEventListeners = () => {
   window.addEventListener( 'resize', sceneManager.onWindowResize, false );
 }
 

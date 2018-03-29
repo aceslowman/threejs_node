@@ -4,19 +4,18 @@ import SceneSubject from "./sceneSubjects/SceneSubject";
 /* ENTITIES */
 import CylinderGrid from "./sceneSubjects/CylinderGrid";
 import PointLight from "./sceneSubjects/PointLight";
-import Camera from "./sceneSubjects/Camera";
+import Camera from "./Camera";
 
 /* UTILITY */
-import EventBus from "./EventBus";
+import EventBus from "./utils/EventBus";
 import dat from "dat.gui";
 
 /* SHADER */
 import * as feedback from './shaders/feedback';
 
 //------------------------------------------------------------------------------
-const SceneManager = function(){
+const SceneManager = function(gui){
   const eventBus = new EventBus();
-  const gui = new dat.GUI();
   const clock = new THREE.Clock();
 
   this.setupRenderer = () => {
@@ -165,6 +164,10 @@ const SceneManager = function(){
     this.camera.cam.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
+  }
+
+  this.getCanvas = () => {
+    return this.renderer.domElement;
   }
 
   this.setupRenderer();
