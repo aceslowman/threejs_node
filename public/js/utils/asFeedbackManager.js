@@ -8,13 +8,15 @@ export default class asFeedbackManager extends asManager{
   constructor(gui){
     super(gui);
 
+    // override background and set renderer clear color for feedback
+    this.scene.background = null;
     this.renderer.setClearColor(0x000000, 0);
 
     /*
       Setup an orthographic camera for rendering-to-texture
     */
     const setupCamera = () => {
-      this.outputCamera = new THREE.OrthographicCamera(
+      this.orthoCamera = new THREE.OrthographicCamera(
           this.width / - 2,
           this.width / 2,
           this.height / 2,
@@ -23,7 +25,7 @@ export default class asFeedbackManager extends asManager{
           1000
       );
 
-      this.outputCamera.position.z = 1;
+      this.orthoCamera.position.z = 1;
     }
 
     /*
@@ -108,7 +110,7 @@ export default class asFeedbackManager extends asManager{
     //render the main scene to the main target
     this.renderer.render(this.scene, this.camera.cam, this.mainTarget);
     //render the feedback to the output target
-    this.renderer.render(this.feedbackScene, this.outputCamera, this.outputTarget);
+    this.renderer.render(this.feedbackScene, this.orthoCamera, this.outputTarget);
 
     //target pingpong
     let tempTarget = this.interTarget;
@@ -118,6 +120,6 @@ export default class asFeedbackManager extends asManager{
     this.feedbackUniforms.tex0.value = this.interTarget.texture;
     this.outputQuad.material.map = this.outputTarget.texture;
 
-    this.renderer.render(this.outputScene, this.outputCamera);
+    this.renderer.render(this.outputScene, this.orthoCamera);
   }
 }

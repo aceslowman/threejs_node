@@ -26,7 +26,6 @@ export default class asManager{
     this.height = window.innerHeight;
 
     this.scene = new THREE.Scene();
-    // this.scene.background = new THREE.Color( 0x000000 );
 
     this.renderer = new THREE.WebGLRenderer({
         'antialias': true,
