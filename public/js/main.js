@@ -13,15 +13,16 @@ let box;
 
 const setup = () => {
   gui      = new dat.GUI();
-  manager = new asFeedbackManager(gui);
-  // manager = new asManager(gui);
-  // manager.scene.background = new THREE.Color( 0x000000 );
+  // manager = new asFeedbackManager(gui);
+  manager = new asManager(gui);
+
 
   box = new Box(manager.scene,manager.eventBus,gui);
 
-  manager.subjects = [
-    box
-  ];
+  // manager.subjects = [
+  //   box
+  // ];
+  manager.addSubject(box);
 
   debug    = new asDebug();
   capturer = new asCapture(gui, {

@@ -29,7 +29,7 @@ export default class asFeedbackManager extends asManager{
     }
 
     /*
-
+      Setup all appropriate targets for each stage
     */
     const setupTargets = () => {
       this.mainTarget   = new THREE.WebGLRenderTarget( this.width, this.height, {
@@ -101,9 +101,7 @@ export default class asFeedbackManager extends asManager{
   }
 
   update(){
-    for(let i=0; i < this._subjects.length; i++){
-      this._subjects[i].update();
-    }
+    this.updateSubjects();
 
     this.camera.update();
 
