@@ -19,34 +19,47 @@ import asEventBus from "./asEventBus";
 
 export default class asManager{
   constructor(gui){
-    this.eventBus = new asEventBus();
-    this.clock = new THREE.Clock();
-
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
+    this.eventBus = new asEventBus();
+    this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color( 0x000000 );
 
+    this.camera = new asCamera(this.scene, this.eventBus, gui);
     this.renderer = new THREE.WebGLRenderer({
         'antialias': true,
         'alpha': true
     });
 
-    this.renderer.setClearColor(0x000000, 0);
     this.renderer.setSize(this.width, this.height);
     document.body.appendChild( this.renderer.domElement );
-
-    this.camera = new asCamera(this.mainScene, this.eventBus, gui);
 
     this._subjects = [];
   }
 
-  update(){
+  updateSubjects(){
     for(let i=0; i < this._subjects.length; i++){
       this._subjects[i].update();
     }
+  }
 
+  update(){
+    this.updateSubjects();
     this.renderer.render(this.scene, this.camera.cam);
+  }
+
+  set subjects(subjects){
+    this._subjects = subjects;
+  }
+
+  addSubject(subject){
+    this._subjects.push(subject);
+  }
+
+  get canvas(){
+    return this.renderer.domElement;
   }
 
   onWindowResize(){
@@ -57,13 +70,5 @@ export default class asManager{
     this.camera.cam.updateProjectionMatrix();
 
     this.renderer.setSize(this.width, this.height);
-  }
-
-  set subjects(subjects){
-    this._subjects = subjects;
-  }
-
-  get canvas(){
-    return this.renderer.domElement;
   }
 }

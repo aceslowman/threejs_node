@@ -17,9 +17,7 @@ const setup = () => {
 
   grid = new CylinderGrid(manager.scene,manager.eventBus,gui,manager.clock);
 
-  manager.subjects = [
-    grid
-  ];
+  manager.addSubject(grid);
 
   debug    = new asDebug();
   capturer = new asCapture(gui, {
