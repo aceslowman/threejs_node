@@ -37,7 +37,7 @@ const setup = () => {
 
   controls = new asOrbitControls( manager.camera.cam, manager.renderer.domElement );
 	controls.enableDamping = true;
-	controls.dampingFactor = 0.25;
+	controls.dampingFactor = 0.8;
 	controls.panningMode = THREE.HorizontalPanning; // default is THREE.ScreenSpacePanning
 	controls.minDistance = 0.01;
 	controls.maxDistance = 10;
