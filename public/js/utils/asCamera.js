@@ -40,6 +40,8 @@ export default class asCamera {
     this.setupGUI();
 
     if(this.useControls) this.setupControls();
+
+    this.template.addSubject(this);
   }
 
   setupGUI(){
@@ -94,10 +96,10 @@ export default class asCamera {
     this.controls.minDistance = 0.01;
     this.controls.maxDistance = 10;
     this.controls.maxPolarAngle = Math.PI / 2;
-    this.controls.autoRotate = true;
+    // this.controls.autoRotate = true;
   }
 
   update(){
-    this.controls.update();
+    if(this.controls) this.controls.update();
   }
 }

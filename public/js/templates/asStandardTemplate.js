@@ -24,6 +24,7 @@ import dat from "dat.gui";
 
 export default class asStandardTemplate{
   constructor(){
+    this.subjects = [];    
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
@@ -33,12 +34,10 @@ export default class asStandardTemplate{
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( 0x000000 );
     this.renderer = new THREE.WebGLRenderer({ 'antialias':true,'alpha':true });
-    this.renderer.setSize(this.width, this.height);    
+    this.renderer.setSize(this.width, this.height);
     this.camera = new asCamera(this);
 
     document.body.appendChild( this.renderer.domElement );
-
-    this.subjects = [];
   }
 
   updateSubjects(){
