@@ -1,10 +1,8 @@
 import * as THREE from "three";
-
-import asManager from "./asManager";
-
+import asStandardTemplate from "./asStandardTemplate";
 import * as feedback from '../shaders/feedback';
 
-export default class asFeedbackManager extends asManager{
+export default class asFeedbackManager extends asStandardTemplate{
   constructor(gui){
     super(gui);
 

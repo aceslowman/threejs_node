@@ -1,6 +1,7 @@
 import * as THREE from "three";
-import asManager from "./utils/asManager";
-import asFeedbackManager from "./utils/asFeedbackManager";
+import asStandardTemplate from "./templates/asStandardTemplate";
+import asFeedbackTemplate from "./templates/asFeedbackTemplate";
+import asOrbitControls from "./utils/asOrbitControls.js";
 import asCapture from "./utils/asCapture";
 import asDebug from "./utils/asDebug";
 import dat from "dat.gui";
@@ -8,23 +9,25 @@ import dat from "dat.gui";
 import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
 
-let gui, manager, debug, capturer;
+let gui, manager, debug, capturer, controls;
 let box;
 
 const setup = () => {
   gui      = new dat.GUI();
-  // manager = new asFeedbackManager(gui);
-  manager = new asManager(gui);
-
+  // manager = new asFeedbackTemplate(gui);
+  manager = new asStandardTemplate(gui);
 
   box = new Box(manager.scene,manager.eventBus,gui);
-
-  // manager.subjects = [
-  //   box
-  // ];
   manager.addSubject(box);
 
-  debug    = new asDebug();
+  debug    = new asDebug(manager, gui, {
+    grid: {
+      size: 10,
+      divisions: 10
+    },
+    stats: true
+  });
+
   capturer = new asCapture(gui, {
     verbose: true,
     display: true,
@@ -32,9 +35,19 @@ const setup = () => {
     format: 'png',
     workersPath: 'js/utils/'
   });
+
+  controls = new asOrbitControls( manager.camera.cam, manager.renderer.domElement );
+	controls.enableDamping = true;
+	controls.dampingFactor = 0.25;
+	controls.panningMode = THREE.HorizontalPanning; // default is THREE.ScreenSpacePanning
+	controls.minDistance = 0.01;
+	controls.maxDistance = 10;
+	controls.maxPolarAngle = Math.PI / 2;
+  // controls.autoRotate = true;
 }
 
 const render = () => {
+  controls.update();
   requestAnimationFrame(render);
 
   debug.stats.begin();

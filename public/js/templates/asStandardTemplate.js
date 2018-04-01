@@ -1,10 +1,10 @@
 import * as THREE from "three";
 
 /* ENTITIES */
-import asCamera from "./asCamera";
+import asCamera from "../utils/asCamera";
 
 /* UTILITY */
-import asEventBus from "./asEventBus";
+import asEventBus from "../utils/asEventBus";
 
 /*
   This file is responsible for high level actions
@@ -17,7 +17,7 @@ import asEventBus from "./asEventBus";
   entity in the scene.
 */
 
-export default class asManager{
+export default class asStandardTemplate{
   constructor(gui){
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
