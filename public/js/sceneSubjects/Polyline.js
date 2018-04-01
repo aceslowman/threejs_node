@@ -2,12 +2,6 @@ import * as THREE from "three";
 
 export default class Polyline {
   constructor(scene, eventBus, gui){
-    this.points = [
-      new THREE.Vector3( -1.0, 0.0, 0.0),
-      new THREE.Vector3( 0.0, 0.0, 0.0),
-      new THREE.Vector3( 1.0, 0.0, 0.0)
-    ];
-
     this.eventBus = eventBus;
     this.gui = gui;
     this.debug = true;
@@ -16,14 +10,23 @@ export default class Polyline {
     this.debug = {
       points: new Array()
     };
-
-    this.build();
+    this.points = [
+      new THREE.Vector3(-1,0,0),
+      new THREE.Vector3(0,0,0),
+      new THREE.Vector3(1,0,0)
+    ];
     this.setupGUI();
+  }
+
+  setPoints(value){
+    this.points = value;
+    this.destroy();
+    this.build();
   }
 
   build(){
     this.geometry = new THREE.Geometry().setFromPoints( this.points );
-    this.subdivide(this.subdivisions);
+    this.subdivisions > 0 ? this.subdivide(this.subdivisions) : this.drawPoints();
 
     this.material = new THREE.LineBasicMaterial({
       color: 0xffffff,
@@ -43,7 +46,7 @@ export default class Polyline {
 
   setupGUI(){
     this.gui = this.gui.addFolder('Lines');
-    this.gui.add(this,'subdivisions',1,10).step(1).onFinishChange(()=>{
+    this.gui.add(this,'subdivisions',0,10).step(1).onFinishChange(()=>{
       this.destroy();
       this.build();
     });
