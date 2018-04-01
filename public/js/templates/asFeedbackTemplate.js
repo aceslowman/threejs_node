@@ -3,8 +3,8 @@ import asStandardTemplate from "./asStandardTemplate";
 import * as feedback from '../shaders/feedback';
 
 export default class asFeedbackManager extends asStandardTemplate{
-  constructor(gui){
-    super(gui);
+  constructor(){
+    super();
 
     // override background and set renderer clear color for feedback
     this.scene.background = null;
@@ -58,11 +58,11 @@ export default class asFeedbackManager extends asStandardTemplate{
           vPoint: { value: [0.5,0.5] }
       };
 
-      this.feedback_gui = gui.addFolder('Feedback Shader');
+      this.gui.feedback = this.gui.addFolder('Feedback Shader');
 
-      this.feedback_gui.add(this.feedbackUniforms.feedback,'value',0,1).name('Amount');
-      this.feedback_gui.add(this.feedbackUniforms.scale,'value',0,2).name('Scale');
-      this.feedback_gui.open();
+      this.gui.feedback.add(this.feedbackUniforms.feedback,'value',0,1).name('Amount');
+      this.gui.feedback.add(this.feedbackUniforms.scale,'value',0,2).name('Scale');
+      this.gui.feedback.open();
 
       const geometry = new THREE.PlaneBufferGeometry( 2., 2.);
       const material = new THREE.ShaderMaterial({

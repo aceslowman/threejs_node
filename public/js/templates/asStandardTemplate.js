@@ -5,43 +5,45 @@ import asCamera from "../utils/asCamera";
 
 /* UTILITY */
 import asEventBus from "../utils/asEventBus";
+import dat from "dat.gui";
 
 /*
-  This file is responsible for high level actions
+  The StandardTemplate is responsible for maintaining some core elements of
+  Three.
 
-  1. create Scene, Renderer, Camera, and the dat.gui
-  2. Initialize SceneSubjects
-  3. Update everything every frame
+  These include:
 
-  SceneSubjects are the objects that represent a single
-  entity in the scene.
+  gui
+  eventbus
+  clock
+  scene
+  camera
+  renderer
+  subjects
 */
 
 export default class asStandardTemplate{
-  constructor(gui){
+  constructor(){
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
+    this.gui = new dat.GUI();
     this.eventBus = new asEventBus();
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( 0x000000 );
+    this.renderer = new THREE.WebGLRenderer({ 'antialias':true,'alpha':true });
+    this.renderer.setSize(this.width, this.height);    
+    this.camera = new asCamera(this);
 
-    this.camera = new asCamera(this.scene, this.eventBus, gui);
-    this.renderer = new THREE.WebGLRenderer({
-        'antialias': true,
-        'alpha': true
-    });
-
-    this.renderer.setSize(this.width, this.height);
     document.body.appendChild( this.renderer.domElement );
 
-    this._subjects = [];
+    this.subjects = [];
   }
 
   updateSubjects(){
-    for(let i=0; i < this._subjects.length; i++){
-      this._subjects[i].update();
+    for(let i=0; i < this.subjects.length; i++){
+      this.subjects[i].update();
     }
   }
 
@@ -50,12 +52,8 @@ export default class asStandardTemplate{
     this.renderer.render(this.scene, this.camera.cam);
   }
 
-  set subjects(subjects){
-    this._subjects = subjects;
-  }
-
   addSubject(subject){
-    this._subjects.push(subject);
+    this.subjects.push(subject);
   }
 
   get canvas(){
