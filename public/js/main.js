@@ -14,7 +14,6 @@ let box;
 
 const setup = () => {
   gui      = new dat.GUI();
-  // manager = new asFeedbackTemplate(gui);
   manager = new asStandardTemplate(gui);
 
   box = new Box(manager.scene,manager.eventBus,gui);
