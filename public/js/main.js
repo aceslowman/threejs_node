@@ -21,9 +21,9 @@ const setup = () => {
 
   debug    = new asDebug();
   capturer = new asCapture(gui, {
-    verbose: true,
+    verbose: false,
     display: true,
-    framerate: 30,
+    framerate: 100,
     format: 'png',
     workersPath: 'js/utils/'
   });

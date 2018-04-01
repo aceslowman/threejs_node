@@ -4,8 +4,9 @@ import Cylinder from "./Cylinder";
 import Box from "./Box";
 
 //------------------------------------------------------------------------------
-const CylinderGrid = function(scene, eventBus, gui, clock){
-  this.setup = () => {
+export default class CylinderGrid{
+  constructor(scene, eventBus, gui, clock){
+    this.clock = clock;
     this.group = new THREE.Group();
 
     this.cylinders  = [];
@@ -14,19 +15,40 @@ const CylinderGrid = function(scene, eventBus, gui, clock){
     this.gridspace  = 2.8;
     this.wireframe  = false;
 
-    this.generateGrid();
+    const generateGrid = () => {
+      this.cylinders = [];
 
-    if(this.drawBox){
-      this.generateBox();
+      for(let x = 0; x < this.resolution; x++){
+        for(let y = 0; y < this.resolution; y++){
+          let cylinder = new Cylinder(scene, eventBus, gui);
+          let circum = this.scale / (this.resolution - 1);
+
+          cylinder.mesh.scale.set(circum/2,this.scale,circum/2);
+
+          cylinder.mesh.position.x =
+            (circum * x - this.scale / 2) * (1 + this.gridspace);
+          cylinder.mesh.position.y =
+            (circum * y - this.scale / 2) * (1 + this.gridspace);
+
+          cylinder.material.wireframe = this.wireframe;
+
+          this.group.add(cylinder.mesh);
+          this.cylinders.push(cylinder);
+        }
+      }
     }
+
+    generateGrid();
 
     this.group.scale.set(this.scale,this.scale,this.scale);
     this.group.position.z = -2;
 
     scene.add(this.group);
+
+    this.setupGUI(gui);
   }
 
-  this.setupGUI = () => {
+  setupGUI(gui){
     this.gui = gui.addFolder('Cylinder Grid');
 
     this.gui.add(this,'scale',0,10).onChange(()=>{
@@ -61,41 +83,12 @@ const CylinderGrid = function(scene, eventBus, gui, clock){
 
     this.gui.add(this.group.rotation,'x',-Math.PI*2,Math.PI*2).step(0.01);
     this.gui.add(this.group.rotation,'y',-Math.PI*2,Math.PI*2).step(0.01);
-    // this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2).step(0.01);
+    this.gui.add(this.group.rotation,'z',-Math.PI*2,Math.PI*2).step(0.01);
 
     this.gui.open();
   }
 
-  this.generateGrid = () => {
-    this.cylinders = [];
-
-    for(let x = 0; x < this.resolution; x++){
-      for(let y = 0; y < this.resolution; y++){
-        let cylinder = new Cylinder(scene, eventBus, gui);
-        let circum = this.scale / (this.resolution - 1);
-
-        cylinder.mesh.scale.set(circum/2,this.scale,circum/2);
-
-        cylinder.mesh.position.x =
-          (circum * x - this.scale / 2) * (1 + this.gridspace);
-        cylinder.mesh.position.y =
-          (circum * y - this.scale / 2) * (1 + this.gridspace);
-
-        cylinder.material.wireframe = this.wireframe;
-
-        this.group.add(cylinder.mesh);
-        this.cylinders.push(cylinder);
-      }
-    }
+  update(){
+    this.group.rotation.z = (Math.PI/2) * Math.sin(this.clock.getElapsedTime()/1.0);
   }
-
-  this.update = () => {
-    // console.log(clock.elapsedTime);
-    this.group.rotation.z = (Math.PI/2) * Math.sin(clock.getElapsedTime()/1.0);
-  }
-
-  this.setup();
-  this.setupGUI();
 }
-
-export default CylinderGrid;
