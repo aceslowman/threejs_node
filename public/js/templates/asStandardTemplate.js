@@ -1,10 +1,10 @@
 import * as THREE from "three";
 
 /* ENTITIES */
-import asCamera from "./asCamera";
+import asCamera from "../utils/asCamera";
 
 /* UTILITY */
-import asEventBus from "./asEventBus";
+import asEventBus from "../utils/asEventBus";
 
 /*
   This file is responsible for high level actions
@@ -17,8 +17,8 @@ import asEventBus from "./asEventBus";
   entity in the scene.
 */
 
-export default class asManager{
-  constructor(gui){
+export default class asStandardTemplate{
+  constructor(gui, options){
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
@@ -27,7 +27,7 @@ export default class asManager{
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( 0x000000 );
 
-    this.camera = new asCamera(this.scene, this.eventBus, gui);
+    this.camera = new asCamera(this.scene, this.eventBus, gui, options);
     this.renderer = new THREE.WebGLRenderer({
         'antialias': true,
         'alpha': true

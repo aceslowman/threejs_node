@@ -1,12 +1,10 @@
 import * as THREE from "three";
-
-import asManager from "./asManager";
-
+import asStandardTemplate from "./asStandardTemplate";
 import * as feedback from '../shaders/feedback';
 
-export default class asFeedbackManager extends asManager{
-  constructor(gui){
-    super(gui);
+export default class asFeedbackManager extends asStandardTemplate{
+  constructor(gui, options){
+    super(gui, options);
 
     // override background and set renderer clear color for feedback
     this.scene.background = null;
