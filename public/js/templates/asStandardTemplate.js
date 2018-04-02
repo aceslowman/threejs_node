@@ -23,8 +23,22 @@ import dat from "dat.gui";
 */
 
 export default class asStandardTemplate{
-  constructor(){
-    this.subjects = [];    
+  constructor({
+    scene = {
+      background: 0x000000
+    },
+    camera = {
+      zoom: 1,
+      ortho: false,
+      orbitControls: true,
+      focalLength: 19.588356831048795
+    },
+    renderer = {
+      antialias: true,
+      alpha: true
+    }
+  }={}){
+    this.subjects = [];
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
@@ -32,10 +46,11 @@ export default class asStandardTemplate{
     this.eventBus = new asEventBus();
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color( 0x000000 );
-    this.renderer = new THREE.WebGLRenderer({ 'antialias':true,'alpha':true });
+
+    this.scene.background = new THREE.Color( scene.background );
+    this.renderer = new THREE.WebGLRenderer( renderer );
     this.renderer.setSize(this.width, this.height);
-    this.camera = new asCamera(this);
+    this.camera = new asCamera(this, camera);
 
     document.body.appendChild( this.renderer.domElement );
   }

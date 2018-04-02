@@ -1,30 +1,36 @@
 import * as THREE from "three";
 import asStandardTemplate from "./templates/asStandardTemplate";
-import asFeedbackTemplate from "./templates/asFeedbackTemplate";
 import asCapture from "./utils/asCapture";
 import asDebug from "./utils/asDebug";
 
 import Box from "./sceneSubjects/Box";
 import PointLight from "./sceneSubjects/PointLight";
 
-let template, debug, capturer, controls;
-let box;
+let template, debug, capturer, controls, box;
 
 const setup = () => {
-  template = new asStandardTemplate();
+  template = new asStandardTemplate({
+    camera: {
+      zoom: 1,
+      ortho: false,
+      orbitControls: true
+    }
+  });
 
-  box = new Box(template);
+  box = new Box(template, {
+    wireframe: true
+  });
 
-  debug    = new asDebug(template, {
+  debug = new asDebug(template, {
     grid: {
       size: 10,
-      divisions: 10
+      divisions: 20
     },
     stats: true
   });
 
   capturer = new asCapture(template, {
-    verbose: true,
+    verbose: false,
     display: true,
     framerate: 30,
     format: 'png',

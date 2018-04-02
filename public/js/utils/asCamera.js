@@ -5,11 +5,13 @@ export default class asCamera {
   constructor(template, {
     zoom = 1,
     ortho = false,
-    controls = false
+    orbitControls = false,
+    focalLength = 19.588356831048795
   } = {}){
     this.template = template;
     this.aspect = window.innerWidth / window.innerHeight;
-    this.useControls = controls;
+    this.useControls = orbitControls;
+    console.log(orbitControls);
 
     this.ortho_cam = new THREE.OrthographicCamera(
       this.aspect / - 2,
@@ -30,7 +32,7 @@ export default class asCamera {
     this.zoom        = zoom;
     this.ortho       = ortho;
     this.focalLength = this.perspective_cam.getFocalLength();
-
+    console.log(this.focalLength);
     this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
     this.cam.position.z = 2;
     this.cam.zoom = this.zoom;
@@ -46,17 +48,18 @@ export default class asCamera {
 
   setupGUI(){
     this.gui.camera = this.gui.addFolder('Camera');
-    this.gui.camera.position = this.gui.addFolder('Position');
+    this.gui.camera.transform = this.gui.camera.addFolder('Transform');
+    this.gui.camera.transform.position = this.gui.camera.transform.addFolder('Position');
 
-    this.gui.camera.position.add(this.cam.position,'x',-10,10).onChange(()=>{
+    this.gui.camera.transform.position.add(this.cam.position,'x').onChange(()=>{
       this.cam.updateProjectionMatrix();
     });
 
-    this.gui.camera.position.add(this.cam.position,'y',-10,10).onChange(()=>{
+    this.gui.camera.transform.position.add(this.cam.position,'y').onChange(()=>{
       this.cam.updateProjectionMatrix();
     });
 
-    this.gui.camera.position.add(this.cam.position,'z',-10,10).onChange(()=>{
+    this.gui.camera.transform.position.add(this.cam.position,'z').onChange(()=>{
       this.cam.updateProjectionMatrix();
     });
 
@@ -78,8 +81,8 @@ export default class asCamera {
     });
 
     this.gui.camera.add(this,'useControls').onChange((value)=>{
-      if(this.controls){
-        this.controls.enabled = value;
+      if(this.orbitControls){
+        this.orbitControls.enabled = value;
       }else if(value){
         this.setupControls();
       }
@@ -89,17 +92,17 @@ export default class asCamera {
   }
 
   setupControls(){
-    this.controls = new asOrbitControls( this.cam, this.template.renderer.domElement );
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.8;
-    this.controls.panningMode = THREE.HorizontalPanning; // default is THREE.ScreenSpacePanning
-    this.controls.minDistance = 0.01;
-    this.controls.maxDistance = 10;
-    this.controls.maxPolarAngle = Math.PI / 2;
-    // this.controls.autoRotate = true;
+    this.orbitControls = new asOrbitControls( this.cam, this.template.renderer.domElement );
+    this.orbitControls.enableDamping = true;
+    this.orbitControls.dampingFactor = 0.8;
+    this.orbitControls.panningMode = THREE.HorizontalPanning; // default is THREE.ScreenSpacePanning
+    this.orbitControls.minDistance = 0.01;
+    this.orbitControls.maxDistance = 10;
+    this.orbitControls.maxPolarAngle = Math.PI / 2;
+    // this.orbitControls.autoRotate = true;
   }
 
   update(){
-    if(this.controls) this.controls.update();
+    if(this.orbitControls) this.orbitControls.update();
   }
 }
