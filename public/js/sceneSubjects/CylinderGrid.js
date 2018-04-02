@@ -4,9 +4,10 @@ import Cylinder from "./Cylinder";
 
 //------------------------------------------------------------------------------
 export default class CylinderGrid{
-  constructor(scene, eventBus, gui, clock){
-    this.clock = clock;
-    this.gui = gui;
+  constructor(template){
+    this.template = template
+    this.clock = this.template.clock;
+    this.gui = this.template.gui;
 
     this.resolution = 14;
     this.scale      = 0.4;
@@ -20,7 +21,7 @@ export default class CylinderGrid{
 
     this.group.scale.set(this.scale,this.scale,this.scale);
 
-    scene.add(this.group);
+    this.template.scene.add(this.group);
     this.setupGUI();
   }
 
