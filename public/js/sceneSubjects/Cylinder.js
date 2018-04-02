@@ -11,5 +11,7 @@ export default class Cylinder{
     this.mesh.rotation.x = Math.PI/2;
   }
 
-  update(){}
+  update(){
+    console.log('buncha calls');
+  }
 }

@@ -89,12 +89,18 @@ export default class CylinderGrid{
   }
 
   update(){
-    let rot = (Math.PI/2) * Math.sin(this.clock.getElapsedTime());
-    this.group.rotation.z = rot;
+    // let rot = (Math.PI/2) * Math.sin(this.clock.getElapsedTime());
+    // this.group.rotation.z = rot;
+    let mod_speed = 2;
+    let mod_depth = 0.1;
 
-    // let mod_speed = 1.5;
-    // let mod_depth = 0.05;
-    // let z = Math.sin(this.clock.getElapsedTime()*mod_speed) * mod_depth;
-    // this.group.position.z = z;
+    for(let x = 0, i = 0; x < this.resolution; x++){
+      for(let y = 0; y < this.resolution; y++, i++){
+        this.cylinders[i].mesh.position.z = Math.sin(this.clock.getElapsedTime()*mod_speed+(x*y)) * mod_depth;
+      }
+    }
+
+    let z = Math.sin(this.clock.getElapsedTime()*mod_speed) * mod_depth;
+    this.group.position.z = z;
   }
 }
