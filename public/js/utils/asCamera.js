@@ -31,7 +31,7 @@ export default class asCamera {
 
     this.zoom        = zoom;
     this.ortho       = ortho;
-    this.focalLength = this.perspective_cam.getFocalLength();
+    this.focalLength = focalLength
     console.log(this.focalLength);
     this.ortho ? this.cam = this.ortho_cam : this.cam = this.perspective_cam;
     this.cam.position.z = 2;
