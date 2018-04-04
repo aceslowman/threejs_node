@@ -19,16 +19,17 @@
   },
   "homepage": "https://github.com/aceslowman/threejs_node#readme",
   "dependencies": {
-    "babel-preset-env": "^1.6.1",
     "ccapture.js": "github:aceslowman/ccapture.js#npm-fix",
     "dat.gui": "^0.7.1",
     "express": "^4.16.2",
     "express-static-gzip": "^0.3.2",
     "npm": "^5.8.0",
     "stats-js": "^1.0.0-alpha1",
-    "three": "^0.90.0"
+    "three": "^0.90.0",
+    "three.meshline": "^1.0.3"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.6.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "compression-webpack-plugin": "^1.1.10",
