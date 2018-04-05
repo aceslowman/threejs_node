@@ -1,5 +1,9 @@
 import * as THREE from "three";
 
+/*
+  Standard Entity
+*/
+
 export default class StandardEntity{
   constructor(manager){
     this.manager = manager;

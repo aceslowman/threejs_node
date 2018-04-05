@@ -1,11 +1,10 @@
 import * as THREE from "three";
 
-/* ENTITIES */
-import asCamera from "../components/asCamera";
-
 /* UTILITY */
-import asEventBus from "../utilities/asEventBus";
+import EventBus from "../utilities/EventBus";
 import dat from "dat.gui";
+
+import Camera from "../entities/Camera";
 
 /*
   The StandardTemplate is responsible for maintaining some core elements of
@@ -27,12 +26,6 @@ export default class asStandardManager{
     scene = {
       background: 0x000000
     },
-    camera = {
-      zoom: 1,
-      ortho: false,
-      orbitControls: true,
-      focalLength: 19.588356831048795
-    },
     renderer = {
       antialias: true,
       alpha: true
@@ -44,15 +37,20 @@ export default class asStandardManager{
     this.entities = [];
 
     this.gui = new dat.GUI();
-    this.eventBus = new asEventBus();
+    this.eventBus = new EventBus();
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( scene.background );
     this.renderer = new THREE.WebGLRenderer( renderer );
     this.renderer.setSize(this.width, this.height);
-    this.camera = new asCamera(this, camera); // TODO: remove camera
+    this.camera = new Camera(this);
 
     document.body.appendChild( this.renderer.domElement );
+  }
+
+  setCamera(camera){
+    this.camera = camera;
+    this.camera.updateProjectionMatrix();
   }
 
   updateEntities(){
@@ -63,7 +61,7 @@ export default class asStandardManager{
 
   update(){
     this.updateEntities();
-    this.renderer.render(this.scene, this.camera.cam);
+    this.renderer.render(this.scene, this.camera.getCamera());
   }
 
   addEntity(entity){

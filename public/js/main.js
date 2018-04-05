@@ -1,25 +1,24 @@
 import * as THREE from "three";
 
-import asStandardManager from "./system/asStandardManager";
-import asCapture from "./utilities/asCapture";
-import asDebug from "./utilities/asDebug";
+import StandardManager from "./system/StandardManager";
+import Capture from "./utilities/Capture";
+import Debug from "./utilities/Debug";
 import Box from "./entities/Box";
 import Camera from "./entities/Camera";
 
 let manager, debug, capturer, controls, box, camera;
 
 const setup = () => {
-
-  manager = new asStandardManager();
+  manager = new StandardManager();
 
   box = new Box(manager);
 
-  debug = new asDebug(manager, {
+  debug = new Debug(manager, {
     stats: true,
     grid: true
   });
 
-  capturer = new asCapture(manager, {
+  capturer = new Capture(manager, {
     verbose: false,
     display: true,
     framerate: 100,

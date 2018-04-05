@@ -3,10 +3,8 @@ import StandardEntity from "./StandardEntity";
 
 /*
   Box Entity
-
-  @param manager - the associated scene/renderer manager
-  @param options -
 */
+
 export default class Box extends StandardEntity{
 
   setup(){
