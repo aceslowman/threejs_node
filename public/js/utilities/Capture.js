@@ -1,6 +1,6 @@
 import CCapture from "ccapture.js";
 
-export default class asCapture {
+export default class Capture {
   constructor (template, options) {
     this.capturer = new CCapture(options);
     this.gui = template.gui.addFolder("Capture");

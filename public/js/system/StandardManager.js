@@ -1,10 +1,7 @@
 import * as THREE from "three";
-
-/* UTILITY */
+import Camera from "../entities/Camera";
 import EventBus from "../utilities/EventBus";
 import dat from "dat.gui";
-
-import Camera from "../entities/Camera";
 
 /*
   The StandardTemplate is responsible for maintaining some core elements of
@@ -17,6 +14,7 @@ import Camera from "../entities/Camera";
   clock
   scene
   camera
+    default camera is used, unless separate camera is passed using setCamera()
   renderer
   entities
 */
@@ -72,8 +70,8 @@ export default class asStandardManager{
     this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera.cam.aspect = this.width / this.height;
-    this.camera.cam.updateProjectionMatrix();
+    this.camera.getCamera().aspect = this.width / this.height;
+    this.camera.getCamera().updateProjectionMatrix();
 
     this.renderer.setSize(this.width, this.height);
   }

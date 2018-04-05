@@ -5,6 +5,7 @@ import * as THREE from "three";
 */
 
 export default class StandardEntity{
+
   constructor(manager){
     this.manager = manager;
     this.clock = manager.clock;
@@ -29,4 +30,5 @@ export default class StandardEntity{
     this.scene.add(this.mesh);
     this.manager.addEntity(this);
   }
+
 }

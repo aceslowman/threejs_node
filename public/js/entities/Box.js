@@ -9,7 +9,7 @@ export default class Box extends StandardEntity{
 
   setup(){
     this.geometry = new THREE.BoxBufferGeometry();
-    this.material = new THREE.MeshNormalMaterial( { 'wireframe': true } );
+    this.material = new THREE.MeshNormalMaterial( { 'wireframe': false } );
     this.mesh     = new THREE.Mesh( this.geometry, this.material );
 
     this.setupGUI();

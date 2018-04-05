@@ -4,14 +4,16 @@ import StandardManager from "./system/StandardManager";
 import Capture from "./utilities/Capture";
 import Debug from "./utilities/Debug";
 import Box from "./entities/Box";
+import Capsule from "./entities/Capsule";
 import Camera from "./entities/Camera";
 
-let manager, debug, capturer, controls, box, camera;
+let manager, debug, capturer, box, camera, capsule;
 
 const setup = () => {
   manager = new StandardManager();
 
-  box = new Box(manager);
+  // box = new Box(manager);
+  capsule = new Capsule(manager);
 
   debug = new Debug(manager, {
     stats: true,
