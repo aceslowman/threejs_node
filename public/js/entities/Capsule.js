@@ -12,10 +12,11 @@ export default class Capsule extends StandardEntity{
     this.radius = 1;
     this.height = 1;
     this.N = 32;
+    this.middleSegments = 5;
 
-    this.geometry = new CapsuleGeometry(this.radius,this.height,this.N);
-    this.material = new THREE.MeshNormalMaterial({wireframe:false, side: THREE.DoubleSide});
-    // this.material = new THREE.MeshPhongMaterial({});
+    this.geometry = new CapsuleGeometry(this.radius,this.height,this.N, this.middleSegments);
+    // this.material = new THREE.MeshNormalMaterial({wireframe:true, side: THREE.DoubleSide});
+    this.material = new THREE.MeshPhongMaterial({});
 
     this.mesh = new THREE.Mesh(this.geometry,this.material);
 
