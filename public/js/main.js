@@ -6,18 +6,20 @@ import Debug from "./utilities/Debug";
 import Box from "./entities/Box";
 import Capsule from "./entities/Capsule";
 import Camera from "./entities/Camera";
+import PointLight from "./entities/PointLight";
 
-let manager, debug, capturer, box, camera, capsule;
+let manager, debug, capturer, box, camera, capsule, light;
 
 const setup = () => {
   manager = new StandardManager();
 
   // box = new Box(manager);
   capsule = new Capsule(manager);
+  light = new PointLight(manager);
 
   debug = new Debug(manager, {
     stats: true,
-    grid: true
+    grid: false
   });
 
   capturer = new Capture(manager, {
