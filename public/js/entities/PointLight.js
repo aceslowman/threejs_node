@@ -12,7 +12,7 @@ export default class PointLight extends StandardEntity{
     this.mesh = new THREE.PointLight( 0xffffff, this.intensity );
     this.mesh.position.set(1,1,1);
     this.setupGUI();
-    this.setupHelpers();
+    // this.setupHelpers();
   }
 
   update(){}

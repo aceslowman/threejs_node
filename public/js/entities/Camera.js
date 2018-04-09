@@ -84,7 +84,7 @@ export default class Camera extends StandardEntity{
     // this.orbitControls.panningMode = THREE.HorizontalPanning; // default is THREE.ScreenSpacePanning
     this.orbitControls.minDistance = 0.01;
     this.orbitControls.maxDistance = 10;
-    this.orbitControls.maxPolarAngle = Math.PI / 2;
+    // this.orbitControls.maxPolarAngle = Math.PI / 2;
     // this.orbitControls.autoRotate = true;
   }
 

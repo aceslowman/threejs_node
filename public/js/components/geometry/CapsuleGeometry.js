@@ -122,11 +122,9 @@ const CapsuleGeometry = (radius = 1, height = 2, N = 32, middleSegments = 1) => 
         geometry.faces.push(face_2);
       }
     }
-    // if(i==(N/4)) break; // N/4 is when the center segments are solved
   }
 
   geometry.computeFaceNormals();
-  // geometry.computeVertexNormals();
 
   return geometry;
 }
