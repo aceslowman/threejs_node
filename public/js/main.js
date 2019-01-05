@@ -17,7 +17,6 @@ const setup = () => {
   light = new PointLight(manager);
 
   if(process.env.DEVELOPMENT){
-    console.log(process.env.DEVELOPMENT);
     debug = new Debug(manager, {
       stats: true,
       grid: false
