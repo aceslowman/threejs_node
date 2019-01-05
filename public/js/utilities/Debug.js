@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Stats from "stats-js";
 
-export default class asDebug{
+export default class Debug{
   constructor(template, options){
     this.template = template;
     this.options = options;

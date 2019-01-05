@@ -21,6 +21,8 @@
   "dependencies": {
     "ccapture.js": "github:aceslowman/ccapture.js#npm-fix",
     "dat.gui": "^0.7.1",
+    "dotenv": "^6.2.0",
+    "dotenv-webpack": "^1.6.0",
     "express": "^4.16.2",
     "express-static-gzip": "^0.3.2",
     "npm": "^6.5.0",

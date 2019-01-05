@@ -16,28 +16,31 @@ const setup = () => {
   capsule = new Capsule(manager);
   light = new PointLight(manager);
 
-  debug = new Debug(manager, {
-    stats: true,
-    grid: false
-  });
+  if(process.env.DEVELOPMENT){
+    console.log(process.env.DEVELOPMENT);
+    debug = new Debug(manager, {
+      stats: true,
+      grid: false
+    });
 
-  capturer = new Capture(manager, {
-    verbose: false,
-    display: true,
-    framerate: 100,
-    format: 'png',
-    workersPath: 'js/utils/'
-  });
+    capturer = new Capture(manager, {
+      verbose: false,
+      display: true,
+      framerate: 100,
+      format: 'png',
+      workersPath: 'js/utils/'
+    });
+  }
 }
 
 const render = () => {
   requestAnimationFrame(render);
 
-  debug.stats.begin();
+  if(process.env.DEVELOPMENT) debug.stats.begin();
   manager.update();
-  debug.stats.end();
+  if(process.env.DEVELOPMENT) debug.stats.end();
 
-  capturer.capture( manager.canvas );
+  if(process.env.DEVELOPMENT) capturer.capture( manager.canvas );
 }
 
 const bindEventListeners = () => {

@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const webpack = require('webpack');
 let WebpackNotifierPlugin = require('webpack-notifier');
@@ -43,7 +44,8 @@ module.exports = {
       fs: 'empty',
     },
     plugins: [
-      new WebpackNotifierPlugin({alwaysNotify: true})
+      new WebpackNotifierPlugin({alwaysNotify: true}),
+      new Dotenv()
     ],
     devtool: 'source-map'
 };

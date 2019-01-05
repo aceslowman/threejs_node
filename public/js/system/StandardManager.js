@@ -19,7 +19,7 @@ import dat from "dat.gui";
   entities
 */
 
-export default class asStandardManager {
+export default class StandardManager {
   constructor({
     scene = {
       background: 0x000000
