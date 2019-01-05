@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack --config webpack.dev.config.js --mode development --watch",
     "build": "webpack --config webpack.prod.config.js --mode production --optimize-minimize --watch",
-    "start": "nodemon server.js --watch server.js",
+    "start": "node server.js",
     "heroku-postbuild": "webpack --config webpack.prod.config.js --mode production --optimize-minimize"
   },
   "repository": {
