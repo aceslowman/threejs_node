@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+let WebpackNotifierPlugin = require('webpack-notifier');
 
 var entry = './public/js/main.js',
     destination = path.join(__dirname, 'public/js/dist');
@@ -41,5 +42,8 @@ module.exports = {
     node: {
       fs: 'empty',
     },
+    plugins: [
+      new WebpackNotifierPlugin({alwaysNotify: true})
+    ],
     devtool: 'source-map'
 };

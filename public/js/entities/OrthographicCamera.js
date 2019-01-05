@@ -6,23 +6,29 @@ import OrbitControls from "../utilities/OrbitControls.js";
   Camera Entity
 */
 
-export default class Camera extends StandardEntity{
+export default class OrthoCamera{
+  constructor(manager){
+    this.manager = manager;
+    this.gui = manager.gui;
+    this.setup();
+    this.active = true;
+  }
 
   setup(){
-    this.aspect = this.manager.width / this.manager.height;
     this.useControls = true;
 
-    this.camera = new THREE.PerspectiveCamera(
-      75,           // fov
-      this.aspect,  // aspect
-      0.1,          // near
-      1000          // far
+    this.camera = new THREE.OrthographicCamera(
+      this.manager.width / - 2,
+      this.manager.width / 2,
+      this.manager.height / 2,
+      this.manager.height / - 2,
+      1,
+      2000
     );
 
-    this.zoom        = 1;
-    this.focalLength = this.camera.getFocalLength();
+    this.zoom = 1;
 
-    this.camera.position.z = 2;
+    this.camera.position.z = 500;
     this.camera.zoom = this.zoom;
     this.camera.updateProjectionMatrix();
 
@@ -35,26 +41,19 @@ export default class Camera extends StandardEntity{
   }
 
   setupGUI(){
-    this.gui.camera = this.gui.addFolder('Camera');
+    this.gui.camera = this.gui.addFolder('OrthoCamera');
     this.gui.camera.transform = this.gui.camera.addFolder('Transform');
     this.gui.camera.transform.position = this.gui.camera.transform.addFolder('Position');
 
     this.gui.camera.transform.position.add(this.camera.position,'x').onChange(()=>{
-      this.cam.updateProjectionMatrix();
+      this.camera.updateProjectionMatrix();
     });
 
     this.gui.camera.transform.position.add(this.camera.position,'y').onChange(()=>{
-      this.cam.updateProjectionMatrix();
+      this.camera.updateProjectionMatrix();
     });
 
     this.gui.camera.transform.position.add(this.camera.position,'z').onChange(()=>{
-      this.cam.updateProjectionMatrix();
-    });
-
-    this.gui.camera.add(this,'focalLength',0,150).onChange((value)=>{
-      if(this.camera.isPerspectiveCamera){
-        this.camera.setFocalLength(value);
-      }
       this.camera.updateProjectionMatrix();
     });
 
@@ -81,11 +80,10 @@ export default class Camera extends StandardEntity{
     );
     this.orbitControls.enableDamping = true;
     this.orbitControls.dampingFactor = 0.8;
-    // this.orbitControls.panningMode = THREE.HorizontalPanning; // default is THREE.ScreenSpacePanning
     this.orbitControls.minDistance = 0.01;
-    this.orbitControls.maxDistance = 10;
-    // this.orbitControls.maxPolarAngle = Math.PI / 2;
-    // this.orbitControls.autoRotate = true;
+    this.orbitControls.maxDistance = 1000;
+    this.orbitControls.enableRotate = false;
+
   }
 
   getCamera(){

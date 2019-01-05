@@ -3,19 +3,19 @@ import StandardEntity from "./StandardEntity";
 import CapsuleGeometry from "../components/geometry/CapsuleGeometry.js";
 
 /*
-  Box Entity
+  Capsule Entity
 */
 
 export default class Capsule extends StandardEntity{
 
   setup(){
-    this.radius = 1;
-    this.height = 2;
+    this.radius = 100;
+    this.height = 200;
     this.N = 32;
     this.middleSegments = 5;
 
     this.geometry = new CapsuleGeometry(this.radius,this.height,this.N, this.middleSegments);
-    this.material = new THREE.MeshNormalMaterial({wireframe:false, side: THREE.DoubleSide});
+    this.material = new THREE.MeshNormalMaterial({wireframe:true, side: THREE.DoubleSide});
     // this.material = new THREE.MeshPhongMaterial({});
 
     this.mesh = new THREE.Mesh(this.geometry,this.material);
@@ -34,5 +34,4 @@ export default class Capsule extends StandardEntity{
     this.gui.capsule = this.gui.addFolder("Capsule");
     this.gui.capsule.add(this.material,"wireframe");
   }
-
 }

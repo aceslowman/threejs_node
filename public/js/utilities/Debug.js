@@ -19,11 +19,21 @@ export default class asDebug{
   setupGUI(){
     this.gui.debug = this.gui.addFolder("Debug");
     this.gui.debug.add(this,"showStats").onChange((value)=>{
-      value ? this.assembleStats() : this.stats.domElement.style.display = 'hidden';
+      if(value){
+        this.assembleStats()
+      }else{
+        this.stats.domElement.style.display = 'hidden';
+      }
     });
 
     this.gui.debug.add(this,"showGrid").onChange((value)=>{
-      value ? this.assembleGrid() : this.template.scene.remove(this.grid.helper);
+      if(value){
+        this.assembleGrid()
+      }else{
+        this.template.scene.remove(this.grid_x.helper);
+        this.template.scene.remove(this.grid_y.helper);
+        this.template.scene.remove(this.grid_z.helper);
+      }
     });
   }
 
@@ -36,12 +46,45 @@ export default class asDebug{
     document.body.appendChild( this.stats.domElement );
   }
 
+  // TODO: allow for boolean (x,y,z)
   assembleGrid(){
-    this.grid = new Object();
-    this.grid.size = this.options.grid.size || 10;
-    this.grid.divisions = this.options.grid.divisions || 10;
+    this.grid_x = new Object();
+    this.grid_x.size = this.options.grid.size || 10;
+    this.grid_x.divisions = this.options.grid.divisions || 10;
 
-    this.grid.helper = new THREE.GridHelper( this.grid.size, this.grid.divisions );
-    this.template.scene.add( this.grid.helper );
+    this.grid_x.helper = new THREE.GridHelper(
+      this.grid_x.size,
+      this.grid_x.divisions,
+      new THREE.Color("orange"),
+      new THREE.Color("red")
+    );
+    this.grid_x.helper.rotation.x = Math.PI / 2;
+    this.template.scene.add( this.grid_x.helper );
+
+    this.grid_y = new Object();
+    this.grid_y.size = this.options.grid.size || 10;
+    this.grid_y.divisions = this.options.grid.divisions || 10;
+
+    this.grid_y.helper = new THREE.GridHelper(
+      this.grid_y.size,
+      this.grid_y.divisions,
+      new THREE.Color("orange"),
+      new THREE.Color("green")
+    );
+    this.grid_y.helper.rotation.y = Math.PI / 2;
+    this.template.scene.add( this.grid_y.helper );
+
+    this.grid_z = new Object();
+    this.grid_z.size = this.options.grid.size || 10;
+    this.grid_z.divisions = this.options.grid.divisions || 10;
+
+    this.grid_z.helper = new THREE.GridHelper(
+      this.grid_z.size,
+      this.grid_z.divisions,
+      new THREE.Color("orange"),
+      new THREE.Color("blue")
+    );
+    this.grid_z.helper.rotation.z = Math.PI / 2;
+    this.template.scene.add( this.grid_z.helper );
   }
 }
