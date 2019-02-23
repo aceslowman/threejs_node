@@ -43,7 +43,7 @@ export default class StandardManager {
     */
     this.renderer = new THREE.WebGLRenderer(renderer);
     this.renderer.setSize(this.width, this.height);
-    this.renderer.autoClear = false; // for overlay
+    // this.renderer.autoClear = false; // for overlay
     document.body.appendChild(this.renderer.domElement);
 
     /*
@@ -86,10 +86,10 @@ export default class StandardManager {
     /*
       render both the main scene, and the debug/ui over scene
     */
-    this.renderer.clear(); //FIXME
+    // this.renderer.clear(); //FIXME
     this.renderer.render(this.scene, this.camera.getCamera());
-    this.renderer.clearDepth(); //FIXME
-    this.renderer.render(this.overScene, this.ortho);
+    // this.renderer.clearDepth(); //FIXME
+    // this.renderer.render(this.overScene, this.ortho);
   }
 
   update() {
