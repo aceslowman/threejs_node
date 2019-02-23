@@ -6,7 +6,7 @@ export default class GOL {
   constructor(manager){
     this.manager = manager;
 
-    this.GPUWIDTH = 64;
+    this.GPUWIDTH = 128;
 
     this.last = 0;
 
@@ -23,7 +23,7 @@ export default class GOL {
     for (let k = 0, kl = theArray.length; k < kl; k += 4) {
       let x = 0;
 
-      if(k % width == width/2){
+      if(k % width == (width/2) && ~~(k / width) < (width/2)){
         x = 1;
       }
 

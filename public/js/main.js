@@ -39,7 +39,7 @@ const setup = () => {
 const render = () => {
   setTimeout(()=>{
     requestAnimationFrame(render);
-  },1000/5);
+  },1000/15);
 
   if(process.env.DEVELOPMENT) debug.stats.begin();
   manager.update();
