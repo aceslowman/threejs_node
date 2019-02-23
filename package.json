@@ -4,6 +4,8 @@
   "description": "modular THREEjs boilerplate, built off of Node, Express, and Webpack",
   "main": "index.js",
   "scripts": {
+    "test": "webpack-dev-server --config webpack.tests.config.js --mode development",
+    "start:dev": "webpack-dev-server --config webpack.dev.config.js --mode development --hot",
     "dev": "webpack --config webpack.dev.config.js --mode development --watch",
     "build": "webpack --config webpack.prod.config.js --mode production --optimize-minimize --watch",
     "start": "node server.js",
@@ -31,13 +33,17 @@
     "three": "^0.90.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.2.0",
     "compression-webpack-plugin": "^1.1.10",
+    "mocha": "^5.2.0",
+    "mocha-loader": "^2.0.0",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^3.2.0",
+    "webpack-dev-server": "^3.1.14",
     "webpack-notifier": "^1.7.0"
   }
 }

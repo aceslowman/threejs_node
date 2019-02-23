@@ -37,6 +37,7 @@ const render = () => {
 
   if(process.env.DEVELOPMENT) debug.stats.begin();
   manager.update();
+  manager.render();
   if(process.env.DEVELOPMENT) debug.stats.end();
 
   if(process.env.DEVELOPMENT) capturer.capture( manager.canvas );

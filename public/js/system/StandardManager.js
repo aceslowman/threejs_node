@@ -82,9 +82,7 @@ export default class StandardManager {
     }
   }
 
-  update() {
-    this.updateEntities();
-
+  render() {
     /*
       render both the main scene, and the debug/ui over scene
     */
@@ -92,6 +90,10 @@ export default class StandardManager {
     this.renderer.render(this.scene, this.camera.getCamera());
     this.renderer.clearDepth(); //FIXME
     this.renderer.render(this.overScene, this.ortho);
+  }
+
+  update() {
+    this.updateEntities();
   }
 
   addEntity(entity) {
