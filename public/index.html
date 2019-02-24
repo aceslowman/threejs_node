@@ -29,12 +29,19 @@
     <div class="container">
 
       <div class="GUI">
-        <button class="clearbutton" type="button">clear</button>
-        <button class="pausebutton" type="button">pause</button>
-        <button class="resumebutton" type="button">resume</button>
-        <br>
-        <input class="sizerange" type="range" min="0" max="100" name="brushsize">
-        <label for="brushsize">brush size</label>
+        <div>
+          <button class="clearbutton" type="button">clear</button>
+          <button class="pausebutton" type="button">pause</button>
+          <button class="resumebutton" type="button">resume</button>
+        </div>
+        <div>
+          <input class="sizerange" type="range" min="0" max="100" name="brushsize">
+          <label style="background-color:black;" for="brushsize">brush size</label>
+        </div>
+        <div>
+          <input class="speedrange" type="range" min="0" max="60" name="speed">
+          <label style="background-color:black;" for="speed">speed</label>
+        </div>
       </div>
 
       <!--

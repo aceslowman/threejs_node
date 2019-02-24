@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import $ from 'jquery';
 
 import StandardManager from "./system/StandardManager";
 import OrthographicCamera from './entities/OrthographicCamera';
@@ -9,11 +10,11 @@ import Capsule from "./entities/Capsule";
 import PointLight from "./entities/PointLight";
 import GOL from "./entities/GOL";
 
-import GUI from './GUI';
-
 let manager, debug, capturer, box, camera, capsule, light;
 
 let gol;
+
+let framerate = 30;
 
 const setup = () => {
   manager = new StandardManager();
@@ -22,8 +23,6 @@ const setup = () => {
   manager.gui.__proto__.constructor.toggleHide();
 
   gol = new GOL(manager);
-
-  let gui = new GUI(manager, gol);
 
   if(process.env.DEVELOPMENT){
     debug = new Debug(manager, {
@@ -39,12 +38,36 @@ const setup = () => {
       workersPath: 'js/utils/'
     });
   }
+
+  $('.clearbutton').click(()=>{
+    gol.clear();
+  });
+
+  $('.pausebutton').click(()=>{
+    gol.pause();
+  });
+
+  $('.resumebutton').click(()=>{
+    gol.resume();
+  });
+
+  $('.sizerange').on('input', (e)=>{
+    let v = $('.sizerange').val();
+    gol.brush.width = v;
+    gol.brush.height = v;
+    gol.brush.setupCanvas();
+  });
+
+  $('.speedrange').on('input', (e)=>{
+    let v = $('.speedrange').val();
+    framerate = v;
+  });
 }
 
 const render = () => {
   setTimeout(()=>{
     requestAnimationFrame(render);
-  },1000/15);
+  },1000/framerate);
 
   if(process.env.DEVELOPMENT) debug.stats.begin();
   manager.update();
