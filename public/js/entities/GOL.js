@@ -14,6 +14,10 @@ export default class GOL {
 
     this.initComputeRenderer();
     this.setupDebug();
+
+    this.raycaster = new THREE.Raycaster();
+
+    window.addEventListener('click', (e)=>this.onClick(e), false);
   }
 
   fillAutomataTexture(texture){
@@ -69,15 +73,8 @@ export default class GOL {
   setupDebug(){
     this.automata_debug_material = new THREE.MeshBasicMaterial();
     let geometry = new THREE.PlaneBufferGeometry(500, 500, 1);
-    let a_mesh = new THREE.Mesh(geometry, this.automata_debug_material);
-    this.manager.scene.add(a_mesh);
-
-    // this.automata_alt_debug_material = new THREE.MeshBasicMaterial();
-    // let a_alt_mesh = new THREE.Mesh(geometry, this.automata_alt_debug_material);
-    // this.manager.scene.add(a_alt_mesh);
-
-    // a_mesh.position.x = - 135;
-    // a_alt_mesh.position.x = 135;
+    this.mesh = new THREE.Mesh(geometry, this.automata_debug_material);
+    this.manager.scene.add(this.mesh);
   }
 
   update(){
@@ -87,18 +84,66 @@ export default class GOL {
     if(delta > 1) delta = 1;
     this.last = now;
 
-    let automata_texture = this.gpuCompute.getCurrentRenderTarget(
+    this.automata_texture = this.gpuCompute.getCurrentRenderTarget(
       this.automataVariable).texture;
-    this.automata_debug_material.map = automata_texture;
+    this.automata_debug_material.map = this.automata_texture;
 
-    let automata_alt_texture = this.gpuCompute.getAlternateRenderTarget(
+    this.automata_alt_texture = this.gpuCompute.getAlternateRenderTarget(
       this.automataVariable).texture;
-    // this.automata_alt_debug_material.map = automata_alt_texture;
 
     this.automataUniforms['time'].value = now;
     this.automataUniforms['delta'].value = delta;
-    this.automataUniforms['state'].value = automata_texture;
+    this.automataUniforms['state'].value = this.automata_texture;
 
     this.gpuCompute.compute();
+  }
+
+  poke(x,y){
+    let canvas = document.createElement('canvas');
+    canvas.width = 10;
+    canvas.height = 10;
+
+    let ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = 'rgb(256,0,0)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    console.log('mouse position', [x,y]);
+    this.gl = this.manager.renderer.getContext();
+
+    let textureProperties = this.manager.renderer.properties.get(this.automata_alt_texture);
+    if(!textureProperties.__webglTexture) console.error('failed to get texture properties');
+
+    let activeTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, textureProperties.__webglTexture);
+    this.gl.texSubImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      x - (canvas.width/2.0),
+      y - (canvas.height/2.0),
+      this.gl.RGBA,
+      this.gl.FLOAT,
+      canvas
+    );
+
+    this.gl.generateMipmap(this.gl.TEXTURE_2D);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, activeTexture);
+  }
+
+  onClick(e){
+    e.preventDefault();
+    let camera = this.manager.camera.getCamera();
+    let mouse = new THREE.Vector2();
+
+    mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+    this.raycaster.setFromCamera(mouse, camera);
+
+    let intersects = this.raycaster.intersectObject(this.mesh);
+
+    let v = intersects[0].uv.multiplyScalar(this.GPUWIDTH);
+
+    this.poke(v.x,v.y);
   }
 }
