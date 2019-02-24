@@ -95,4 +95,8 @@ export default class Camera{
   getCamera(){
     return this.camera;
   }
+
+  disableOrbitControls(){
+    this.orbitControls = null;
+  }
 }

@@ -28,6 +28,7 @@
     "dotenv-webpack": "^1.6.0",
     "express": "^4.16.2",
     "express-static-gzip": "^0.3.2",
+    "jquery": "^3.3.1",
     "npm": "^6.5.0",
     "stats-js": "^1.0.0-alpha1",
     "three": "^0.90.0"

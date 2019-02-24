@@ -22,7 +22,7 @@ import dat from "dat.gui";
 export default class StandardManager {
   constructor({
     scene = {
-      background: 'black'
+      background: 'white'
     },
     renderer = {
       antialias: true,
