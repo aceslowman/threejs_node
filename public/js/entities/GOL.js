@@ -2,6 +2,43 @@ import * as THREE from 'three';
 import GPUComputationRenderer from '../utilities/GPUComputationRenderer';
 import * as automataShader from '../shaders/automataShader';
 
+class Brush {
+  constructor(){
+    this.width = 50;
+    this.height = 50;
+
+    this.type = 0;
+
+    this.setupCanvas();
+  }
+
+  setupCanvas(){
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+
+    this.ctx = this.canvas.getContext('2d');
+
+    this.ctx.fillStyle = 'rgb(256,0,0)';
+
+    switch (this.type) {
+      case 0:
+        this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+        break;
+      default:
+        this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+    }
+  }
+
+  updateCanvas(){
+    // NOTE: using this in some situations would be more performant, but it
+    // turns the brush into an eraser.
+
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+  }
+}
+
 export default class GOL {
   constructor(manager){
     this.manager = manager;
@@ -23,9 +60,10 @@ export default class GOL {
 
     this.raycaster = new THREE.Raycaster();
 
-    this.brush_size = 50;
+    this.brush = new Brush();
 
-    window.addEventListener('click', (e)=>this.onClick(e), false);
+    this.manager.renderer.domElement.addEventListener('click', (e)=>this.onClick(e), false);
+    this.manager.renderer.domElement.addEventListener('mousemove', (e)=>this.onDrag(e), false);
     window.addEventListener('resize',(e)=>this.onResize(e), false);
 
     this.playing = true;
@@ -127,16 +165,7 @@ export default class GOL {
 
   //----------------------------------------------------------------------------
 
-  poke(x,y){
-    let canvas = document.createElement('canvas');
-    canvas.width = this.brush_size;
-    canvas.height = this.brush_size;
-
-    let ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = 'rgb(256,0,0)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
+  poke(canvas,x,y){
     this.gl = this.manager.renderer.getContext();
 
     // first, draw to the alt texture
@@ -212,7 +241,28 @@ export default class GOL {
     let v = intersects[0].uv;
     v.multiply(new THREE.Vector2(this.GPUWIDTH, this.GPUHEIGHT));
 
-    this.poke(v.x,v.y);
+    this.poke(this.brush.canvas,v.x,v.y);
+  }
+
+  onDrag(e){
+    if (e.which == 1) {
+      e.preventDefault();
+      let camera = this.manager.camera.getCamera();
+      let mouse = new THREE.Vector2();
+
+      mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+      mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+      this.raycaster.setFromCamera(mouse, camera);
+
+      let intersects = this.raycaster.intersectObject(this.mesh);
+
+      let v = intersects[0].uv;
+      v.multiply(new THREE.Vector2(this.GPUWIDTH, this.GPUHEIGHT));
+
+      this.poke(this.brush.canvas,v.x,v.y);
+      // console.log('DRAG',[e.pageX,e.pageY]);
+    }
   }
 
   onResize(e){
