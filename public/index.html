@@ -30,16 +30,20 @@
 
       <div class="GUI">
         <div>
+          <select class="typeselect">
+            <option value="0">square</option>
+            <option value="1">circle</option>
+            <option value="2">noise</option>
+          </select>
           <button class="clearbutton" type="button">clear</button>
-          <button class="pausebutton" type="button">pause</button>
-          <button class="resumebutton" type="button">resume</button>
-        </div>
+          <button class="togglepause" type="button">pause</button>
+        </div><br>
         <div>
-          <input class="sizerange" type="range" min="0" max="100" name="brushsize">
+          <input class="sizerange" type="range" min="1" max="100" name="brushsize">
           <label style="background-color:black;" for="brushsize">brush size</label>
         </div>
         <div>
-          <input class="speedrange" type="range" min="0" max="60" name="speed">
+          <input class="speedrange" type="range" min="1" max="60" name="speed">
           <label style="background-color:black;" for="speed">speed</label>
         </div>
       </div>

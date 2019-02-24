@@ -43,24 +43,35 @@ const setup = () => {
     gol.clear();
   });
 
-  $('.pausebutton').click(()=>{
-    gol.pause();
+  $('.togglepause').click(()=>{
+    if(gol.playing){
+      gol.pause();
+      $('.togglepause').html('play');
+    }else{
+      gol.resume();
+      $('.togglepause').html('pause');
+    }
   });
+  //
+  // $('.resumebutton').click(()=>{
+  //   gol.resume();
+  // });
 
-  $('.resumebutton').click(()=>{
-    gol.resume();
-  });
-
-  $('.sizerange').on('input', (e)=>{
+  $('.sizerange').on('input', ()=>{
     let v = $('.sizerange').val();
     gol.brush.width = v;
     gol.brush.height = v;
     gol.brush.setupCanvas();
   });
 
-  $('.speedrange').on('input', (e)=>{
+  $('.speedrange').on('input', ()=>{
     let v = $('.speedrange').val();
     framerate = v;
+  });
+
+  $('.typeselect').on('change', ()=>{
+    gol.brush.type = $('.typeselect').val();
+    gol.brush.setupCanvas();
   });
 }
 
