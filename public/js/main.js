@@ -52,10 +52,6 @@ const setup = () => {
       $('.togglepause').html('pause');
     }
   });
-  //
-  // $('.resumebutton').click(()=>{
-  //   gol.resume();
-  // });
 
   $('.sizerange').on('input', ()=>{
     let v = $('.sizerange').val();
@@ -72,6 +68,21 @@ const setup = () => {
   $('.typeselect').on('change', ()=>{
     gol.brush.type = $('.typeselect').val();
     gol.brush.setupCanvas();
+  });
+
+  $('.resolutionselect').on('change', ()=>{
+    let v = $('.resolutionselect').val();
+    gol.setResolution(v);
+  });
+
+  $('.togglegrid').click(()=>{
+    if(gol.grid.visible){
+      gol.grid.visible = false;
+      $('.togglegrid').html('show grid');
+    }else{
+      gol.grid.visible = true;
+      $('.togglegrid').html('hide grid');
+    }
   });
 }
 

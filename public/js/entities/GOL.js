@@ -18,9 +18,6 @@ class Brush {
     this.canvas.height = this.height;
 
     this.ctx = this.canvas.getContext('2d');
-
-
-
     this.ctx.fillStyle = 'rgba(0,0,0,256)';
     this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
 
@@ -68,7 +65,7 @@ export default class GOL {
 
     this.aspect = this.manager.width / this.manager.height;
 
-    this.resolution = 256;
+    this.resolution = 128;
 
     this.GPUWIDTH = this.resolution;
     this.GPUHEIGHT = this.resolution / this.aspect;
@@ -97,6 +94,12 @@ export default class GOL {
     let geometry = new THREE.PlaneBufferGeometry(this.manager.width, this.manager.height, 1);
     this.mesh = new THREE.Mesh(geometry, this.automata_debug_material);
     this.manager.scene.add(this.mesh);
+
+    // define toggleable gridHelper for placement.
+    this.grid = new THREE.GridHelper(this.manager.width, this.GPUWIDTH,'#353535','#353535');
+    this.grid.rotation.x = Math.PI / 2;
+    this.grid.visible = false;
+    this.manager.scene.add(this.grid);
   }
 
   setupInitialState(state){
@@ -244,6 +247,26 @@ export default class GOL {
 
   resume(){
     this.playing = true;
+  }
+
+  setResolution(res){
+    this.aspect = this.manager.width / this.manager.height;
+
+    this.resolution = Number(res);
+
+    this.GPUWIDTH = this.resolution;
+    this.GPUHEIGHT = this.resolution / this.aspect;
+
+    this.setupInitialState();
+    this.initComputeRenderer();
+
+    let vis = this.grid.visible;
+
+    this.manager.scene.remove(this.grid);
+    this.grid = new THREE.GridHelper(this.manager.width, this.GPUWIDTH,'#353535','#353535');
+    this.grid.rotation.x = Math.PI / 2;
+    this.grid.visible = vis;
+    this.manager.scene.add(this.grid);
   }
 
   //----------------------------------------------------------------------------
