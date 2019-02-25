@@ -74,16 +74,15 @@ export default class OrthoCamera{
   }
 
   setupOrbit(){
-    // this.orbitControls = new OrbitControls(
-    //   this.camera,
-    //   this.manager.renderer.domElement
-    // );
-    // this.orbitControls.enableDamping = true;
-    // this.orbitControls.dampingFactor = 0.8;
-    // this.orbitControls.minDistance = 0.01;
-    // this.orbitControls.maxDistance = 1000;
-    // this.orbitControls.enableRotate = false;
-
+    this.orbitControls = new OrbitControls(
+      this.camera,
+      this.manager.renderer.domElement
+    );
+    this.orbitControls.enableDamping = true;
+    this.orbitControls.dampingFactor = 0.8;
+    this.orbitControls.minDistance = 0.01;
+    this.orbitControls.maxDistance = 1000;
+    this.orbitControls.enableRotate = false;
   }
 
   getCamera(){

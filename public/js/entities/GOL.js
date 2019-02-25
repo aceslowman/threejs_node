@@ -65,7 +65,7 @@ export default class GOL {
 
     this.aspect = this.manager.width / this.manager.height;
 
-    this.resolution = 128;
+    this.resolution = 2048;
 
     this.GPUWIDTH = this.resolution;
     this.GPUHEIGHT = this.resolution / this.aspect;

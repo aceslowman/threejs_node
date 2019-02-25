@@ -29,15 +29,15 @@ const setup = () => {
       stats: true,
       grid: false
     });
-
-    capturer = new Capture(manager, {
-      verbose: false,
-      display: true,
-      framerate: 100,
-      format: 'png',
-      workersPath: 'js/utils/'
-    });
   }
+
+  capturer = new Capture(manager, {
+    verbose: true,
+    format: 'gif',
+    workersPath: 'js/utils/'
+  });
+
+  // LISTENERS ------------------------------------------
 
   $('.clearbutton').click(()=>{
     gol.clear();
@@ -83,6 +83,24 @@ const setup = () => {
       gol.grid.visible = true;
       $('.togglegrid').html('hide grid');
     }
+  });
+
+  let recording = false;
+
+  $('.togglerecord').click(()=>{
+    if(recording){
+      recording = false;
+      capturer.capturer.stop();
+      $('.togglerecord').html('record');
+    }else{
+      recording = true;
+      capturer.capturer.start();
+      $('.togglerecord').html('STOP RECORDING');
+    }
+  });
+
+  $('.savebutton').click(()=>{
+    capturer.capturer.save();
   });
 }
 
