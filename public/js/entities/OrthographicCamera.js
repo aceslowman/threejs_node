@@ -80,8 +80,10 @@ export default class OrthoCamera{
     );
     this.orbitControls.enableDamping = true;
     this.orbitControls.dampingFactor = 0.8;
-    this.orbitControls.minDistance = 0.01;
-    this.orbitControls.maxDistance = 1000;
+    // this.orbitControls.minDistance = 0.01;
+    // this.orbitControls.maxDistance = 1;
+    this.orbitControls.minZoom = 1;
+    this.orbitControls.maxZoom = 200;
     this.orbitControls.enableRotate = false;
   }
 
