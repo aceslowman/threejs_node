@@ -43,6 +43,7 @@ export default class Debug{
     this.stats.domElement.style.left = '0px';
     this.stats.domElement.style.bottom = '0px';
     this.stats.domElement.style.display = 'visible';
+    this.stats.domElement.style.top = '';
     document.body.appendChild( this.stats.domElement );
   }
 
