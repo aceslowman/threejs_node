@@ -65,7 +65,7 @@ export default class GOL {
 
     this.aspect = this.manager.width / this.manager.height;
 
-    this.resolution = 2048;
+    this.resolution = 1024;
 
     this.GPUWIDTH = this.resolution;
     this.GPUHEIGHT = this.resolution / this.aspect;
@@ -156,8 +156,8 @@ export default class GOL {
     this.automataUniforms['delta'] = { value: 0.0 };
     this.automataUniforms['state'] = { value: null };
 
-    this.automataVariable.wrapS = THREE.RepeatWrapping;
-    this.automataVariable.wrapT = THREE.RepeatWrapping;
+    this.automataVariable.wrapS = THREE.ClampToEdgeWrapping;
+    this.automataVariable.wrapT = THREE.ClampToEdgeWrapping;
 
     let error = this.gpuCompute.init();
     if (error !== null) {

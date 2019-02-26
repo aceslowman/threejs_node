@@ -16,6 +16,10 @@ let gol;
 
 let framerate = 30;
 
+let recording = false;
+
+let timeout;
+
 const setup = () => {
   manager = new StandardManager();
 
@@ -26,14 +30,16 @@ const setup = () => {
 
   if(process.env.DEVELOPMENT){
     debug = new Debug(manager, {
-      stats: true,
+      stats: false,
       grid: false
     });
   }
 
   capturer = new Capture(manager, {
+    framerate: framerate,
     verbose: true,
-    format: 'gif',
+    display: true,
+    format: 'png',
     workersPath: 'js/utils/'
   });
 
@@ -85,14 +91,13 @@ const setup = () => {
     }
   });
 
-  let recording = false;
-
   $('.togglerecord').click(()=>{
     if(recording){
       recording = false;
       capturer.capturer.stop();
       $('.togglerecord').html('record');
     }else{
+      // clearInterval(timeout);
       recording = true;
       capturer.capturer.start();
       $('.togglerecord').html('STOP RECORDING');
@@ -104,17 +109,28 @@ const setup = () => {
   });
 }
 
+
+let now, delta, then = Date.now();
+
 const render = () => {
-  setTimeout(()=>{
-    requestAnimationFrame(render);
-  },1000/framerate);
+  requestAnimationFrame(render);
 
-  if(process.env.DEVELOPMENT) debug.stats.begin();
-  manager.update();
-  manager.render();
-  if(process.env.DEVELOPMENT) debug.stats.end();
+  now = Date.now();
+  delta = now - then;
 
-  if(process.env.DEVELOPMENT) capturer.capture( manager.canvas );
+  // if(process.env.DEVELOPMENT) debug.stats.begin();
+  if(delta > (1000/framerate)){
+    manager.update();
+    manager.render();
+    then = now - (delta % (1000/framerate));
+  }
+
+  // if(process.env.DEVELOPMENT) debug.stats.end();
+
+  capturer.capture( manager.canvas );
+
+  // console.log(capturer.capturer);
+  // $('.framecount').html(capturer.capturer._framecount);
 }
 
 const bindEventListeners = () => {
